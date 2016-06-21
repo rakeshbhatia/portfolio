@@ -14,3 +14,89 @@ h1 {
 p {
   font-size: 2rem;
 }
+
+nav {
+  background-color: #FFF;
+}
+
+.home-btn {
+  float: center;
+}
+
+.home-btn a {
+  cursor: pointer;
+  padding: 8px 18px;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+.home-btn a:active {
+	top: 2px;
+}
+
+.bio-btn {
+  float: center;
+}
+
+.bio-btn a {
+  cursor: pointer;
+  padding: 8px 18px;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+.bio-btn a:active {
+	top: 2px;
+}
+
+.projects-btn {
+  float: center;
+}
+
+.projects-btn a {
+  cursor: pointer;
+  padding: 8px 18px;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+.projects-btn a:active {
+	top: 2px;
+}
+
+.resume-btn {
+  float: center;
+}
+
+.resume-btn a {
+  cursor: pointer;
+  padding: 8px 18px;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+.resume-btn a:active {
+	top: 2px;
+}
+
+.contact-btn {
+  float: center;
+}
+
+.contact-btn a {
+  cursor: pointer;
+  padding: 8px 18px;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+.contact-btn a:active {
+	top: 2px;
+}
+
+nav a {
+  height: 60px;
+  line-height: 60px;
+  color: #204156;
+  text-decoration: none;
+}
