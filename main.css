@@ -25,7 +25,7 @@ nav {
   display: flex;
   flex-direction: row;
   text-align: center;
-  width: 33%;
+  width: 66%;
   margin-right: auto;
   margin-left: auto;
 }
@@ -36,6 +36,11 @@ nav {
 
 .menu-links{
   width: 20%;
+}
+
+.menu-links a {
+  display: block;
+  width: 100%;
 }
 
 #home-btn a {
