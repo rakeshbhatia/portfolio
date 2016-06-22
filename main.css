@@ -40,7 +40,6 @@ nav {
 
 #home-btn a {
   cursor: pointer;
-  padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
@@ -55,7 +54,6 @@ nav {
 
 #bio-btn a {
   cursor: pointer;
-  padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
@@ -70,7 +68,6 @@ nav {
 
 #projects-btn a {
   cursor: pointer;
-  padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
@@ -85,7 +82,6 @@ nav {
 
 #resume-btn a {
   cursor: pointer;
-  padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
@@ -100,7 +96,6 @@ nav {
 
 #contact-btn a {
   cursor: pointer;
-  padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
