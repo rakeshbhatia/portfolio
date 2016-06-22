@@ -23,6 +23,7 @@ p {
 nav {
   background-color: #FFF;
   display: flex;
+  flex-direction: row;
 }
 
 .home-btn {
