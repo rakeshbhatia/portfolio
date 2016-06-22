@@ -22,7 +22,7 @@ p {
 
 nav {
   background-color: #FFF;
-  display: inline;
+  display: flex;
 }
 
 .home-btn {
