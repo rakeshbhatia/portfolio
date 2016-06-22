@@ -25,6 +25,9 @@ nav {
   display: flex;
   flex-direction: row;
   text-align: center;
+  width: 33%;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .home-btn {
