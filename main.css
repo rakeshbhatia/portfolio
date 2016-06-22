@@ -38,11 +38,6 @@ nav {
   width: 20%;
 }
 
-.menu-links a {
-  display: block;
-  width: 100%;
-}
-
 #home-btn a {
   cursor: pointer;
   padding: 8px 18px;
@@ -119,4 +114,6 @@ nav a {
   line-height: 60px;
   color: #204156;
   text-decoration: none;
+  display: block;
+  width: 100%;
 }
