@@ -24,6 +24,7 @@ nav {
   background-color: #FFF;
   display: flex;
   flex-direction: row;
+  text-align: center;
 }
 
 .home-btn {
