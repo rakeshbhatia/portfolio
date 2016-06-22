@@ -12,8 +12,8 @@ h1 {
 }
 
 img {
-  width: 100px;
-  height: 100px;
+  width: 512px;
+  height: 384px;
 }
 
 p {
@@ -30,78 +30,82 @@ nav {
   margin-left: auto;
 }
 
-.home-btn {
+#home-btn {
   float: center;
 }
 
-.home-btn a {
+.menu-links{
+  width: 20%;
+}
+
+#home-btn a {
   cursor: pointer;
   padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
 
-.home-btn a:active {
+#home-btn a:active {
 	top: 2px;
 }
 
-.bio-btn {
+#bio-btn {
   float: center;
 }
 
-.bio-btn a {
+#bio-btn a {
   cursor: pointer;
   padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
 
-.bio-btn a:active {
+#bio-btn a:active {
 	top: 2px;
 }
 
-.projects-btn {
+#projects-btn {
   float: center;
 }
 
-.projects-btn a {
+#projects-btn a {
   cursor: pointer;
   padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
 
-.projects-btn a:active {
+#projects-btn a:active {
 	top: 2px;
 }
 
-.resume-btn {
+#resume-btn {
   float: center;
 }
 
-.resume-btn a {
+#resume-btn a {
   cursor: pointer;
   padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
 
-.resume-btn a:active {
+#resume-btn a:active {
 	top: 2px;
 }
 
-.contact-btn {
+#contact-btn {
   float: center;
 }
 
-.contact-btn a {
+#contact-btn a {
   cursor: pointer;
   padding: 8px 18px;
   border: 1px solid #204156;
   position: relative;
 }
 
-.contact-btn a:active {
+#contact-btn a:active {
 	top: 2px;
 }
 
