@@ -113,6 +113,7 @@ nav a {
   text-decoration: none;
   display: block;
   width: 100%;
+	font-family: Verdana, Geneva, sans-serif;
 	margin-top: auto;
 	margin-bottom: auto;
 }
