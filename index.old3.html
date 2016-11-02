@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Scrolling Nav - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Home</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a class="page-scroll" href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#bio">Bio</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#projects">Projects</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#resume">Resume</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Intro Section -->
+    <section id="intro" class="intro-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="profile-text">
+                        <div class="main-header">
+                            <h1>Rakesh Bhatia</h1>
+                            <h2>Web Developer</h2>
+                        </div>
+                    </div>
+                    <div class="profile-picture" style="margin:0px auto; text-align:center;">
+                        <img src="Rakesh_Argentina.jpg"/>
+                    </div>
+                    <!--<p><strong>Usage Instructions:</strong> Make sure to include the <code>scrolling-nav.js</code>, <code>jquery.easing.min.js</code>, and <code>scrolling-nav.css</code> files. To make a link smooth scroll to another section on the page, give the link the <code>.page-scroll</code> class and set the link target to a corresponding ID on the page.</p>-->
+                    <div class="copyright">
+                        <p>&copy; Rakesh Bhatia</p>
+                    </div>
+                    <a class="btn btn-default page-scroll" href="#bio">Click Me to Scroll Down!</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bio Section -->
+    <section id="bio" class="bio-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Bio</h1>
+                    <div class="full-bio">
+                        <p>
+                          I have completed my B.S. in Electrical Engineering from UCLA, along with
+                          an M.S. in Computer Engineering from UCSB. I am nearing completion on
+                          a Ruby on Rails web development boot camp with Bloc.io, and am currently looking
+                          for opportunities in web development.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Projects</h1>
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+                        <!-- Slider Content (Wrapper for slides )-->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <div class="project-picture" style="margin:0px auto; text-align:center;">
+                                    <img src="Bloccit.jpg" width="750px">
+                                    <div class="carousel-caption">
+                                        <p>Bloccit</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="project-picture" style="margin:0px auto; text-align:center;">
+                                    <img src="Blocmarks.jpg">
+                                    <div class="carousel-caption">
+                                        <p>Blocmarks</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="project-picture" style="margin:0px auto; text-align:center;">
+                                    <img src="Open_Todo_API.jpg">
+                                    <div class="carousel-caption">
+                                        <p>Open_Todo_API</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resume Section -->
+    <div class="section" id = "section4">
+      <div id = "resume_container">
+        <div id = "resume">
+          <p id = "image_text">Click to enlarge</p>
+          <a class="fancybox" rel="group" href="images/Resume.jpg"><img src = "images/Resume.jpg" alt = "Clickable Resume"/></a>
+        </div>
+      </div>
+    </div>
+
+    <!--<section id="resume" class="resume-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Resume</h1>
+                    <!--Start new modal here-->
+                    <div class="container">
+                        <!--<div class="resume-img">-->
+                            <a class="fancybox" rel="group" href="Resume.jpg"><img src="Resume.jpg" alt="Clickable Resume" width="297.5px" height="385px"/></a>
+                        <!--</div>-->
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Enlarge Resume</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Resume</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="modal-img" style="margin:0px auto; text-align:center;">
+                                            <img src="Resume.jpg" alt="Clickable Resume" width="552.5px" height="715px"/>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End new modal here-->
+                    <!--<div id="resume_container">
+                        <div id="resume">
+            			    	      <a class="fancybox" rel="group" href="Resume.jpg"><img src="Resume.jpg" alt="Clickable Resume" width="212.5px" height="275px"/></a>
+                        </div>-->
+          		   	 	</div>
+                </div>
+            </div>
+        </div>
+    </section>-->
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Contact</h1>
+                    <h3>email: rakeshbhatia87@gmail.com</h3>
+                    <h3>github: <a href="https://github.com/rakeshbhatia">https://github.com/rakeshbhatia</a></h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/scrolling-nav.js"></script>
+
+</body>
+
+</html>

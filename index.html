@@ -3,98 +3,267 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Scrolling Nav - Start Bootstrap Template</title>
 
-  <!-- Bootstrap Core CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom CSS -->
-  <link href="css/simple-sidebar.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
+    <link href="jquery.fancybox.css" rel="stylesheet" type="text/css" media="screen" />
+
 
 </head>
 
-<body>
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
 
-  <div id="wrapper">
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
-    <!-- Sidebar -->
-    <div id="sidebar-wrapper">
-      <ul class="sidebar-nav">
-        <li class="sidebar-brand">
-          <a href="#">
-              Start Bootstrap
-          </a>
-        </li>
-        <li>
-          <a href="#">Dashboard</a>
-        </li>
-        <li>
-          <a href="#">Shortcuts</a>
-        </li>
-        <li>
-          <a href="#">Overview</a>
-        </li>
-        <li>
-          <a href="#">Events</a>
-        </li>
-        <li>
-          <a href="#">About</a>
-        </li>
-        <li>
-          <a href="#">Services</a>
-        </li>
-        <li>
-          <a href="#">Contact</a>
-        </li>
-      </ul>
-    </div>
-    <!-- /#sidebar-wrapper -->
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Home</a>
+            </div>
 
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12">
-            <h1>Simple Sidebar</h1>
-            <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-            <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-          </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a class="page-scroll" href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#bio">Bio</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#projects">Projects</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#resume">Resume</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-      </div>
-    </div>
-    <!-- /#page-content-wrapper -->
+        <!-- /.container -->
+    </nav>
 
-  </div>
-  <!-- /#wrapper -->
+    <!-- Intro Section -->
+    <section id="intro" class="intro-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="profile-text">
+                        <div class="main-header">
+                            <h1>Rakesh Bhatia</h1>
+                            <h2>Software Developer</h2>
+                        </div>
+                    </div>
+                    <div class="profile-picture" style="margin:0px auto; text-align:center;">
+                        <img src="Rakesh_Argentina.jpg"/>
+                    </div>
+                    <!--<p><strong>Usage Instructions:</strong> Make sure to include the <code>scrolling-nav.js</code>, <code>jquery.easing.min.js</code>, and <code>scrolling-nav.css</code> files. To make a link smooth scroll to another section on the page, give the link the <code>.page-scroll</code> class and set the link target to a corresponding ID on the page.</p>-->
+                    <a class="btn btn-default page-scroll" href="#bio">Click Me to Scroll Down!</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- jQuery -->
-  <script src="js/jquery.js"></script>
+    <!-- Bio Section -->
+    <section id="bio" class="bio-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Bio</h1>
+                    <div class="full-bio">
+                        <p>
+                          I have completed my B.S. in Electrical Engineering from UCLA, along with
+                          an M.S. in Computer Engineering from UCSB. I am nearing completion on
+                          a Ruby on Rails web development boot camp with Bloc.io, and am currently looking
+                          for opportunities in web development.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Bootstrap Core JavaScript -->
-  <script src="js/bootstrap.min.js"></script>
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Projects</h1>
+                    <div id="contentContainer">
+                        <div id="wrapper">
+                            <div id="itemOne" class="content">
+                                <div id="itemOneImage">
+                                    <img src="Blocmarks_Code_3.jpg" width="479px" height="278px"/>
+                                </div>
+                                <div id="itemOneDescription">
+                                    <p>This project involves creating a social bookmarking application.</p>
+                                </div>
+                            </div>
+                            <div id="itemTwo" class="content">
 
-  <!-- Menu Toggle Script -->
-  <script>
-  $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-  });
-  </script>
+                            </div>
+                            <div id="itemThree" class="content">
 
+                            </div>
+                            <div id="itemFour" class="content">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="navLinks">
+                        <ul>
+                            <li class="itemLinks" data-pos="0px"></li>
+                            <li class="itemLinks" data-pos="-800px"></li>
+                            <li class="itemLinks" data-pos="-1600px"></li>
+                            <li class="itemLinks" data-pos="-2400px"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resume Section -->
+    <section id="resume" class="resume-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                        <div id = "resume_container">
+                            <div id = "resume">
+                                <h1>Click to enlarge</h1>
+                                <a class="fancybox" rel="group" href="Resume.jpg"><img src = "Resume.jpg" alt = "Clickable Resume" width="340px" height="440px"/></a>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Contact</h1>
+                    <div class="contact-info">
+                        <a href="https://github.com/rakeshbhatia"><img src="GitHub_Logo.jpg" width="250px" height="102.5px"/></a>
+                        <h3>email: rakeshbhatia87@gmail.com</h3>
+                        <div class="copyright">
+                            <p>&copy; Rakesh Bhatia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="jquery.fancybox.pack.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/scrolling-nav.js"></script>
+    <script>
+        // just querying the DOM...like a boss!
+        var links = document.querySelectorAll(".itemLinks");
+        var wrapper = document.querySelector("#wrapper");
+
+        // the activeLink provides a pointer to the currently displayed item
+        var activeLink = 0;
+
+        // setup the event listeners
+        for (var i = 0; i < links.length; i++) {
+            var link = links[i];
+            link.addEventListener('click', setClickedItem, false);
+
+            // identify the item for the activeLink
+            link.itemID = i;
+        }
+
+        // set first item as active
+        links[activeLink].classList.add("active");
+
+        function setClickedItem(e) {
+            removeActiveLinks();
+
+            var clickedLink = e.target;
+            activeLink = clickedLink.itemID;
+
+            changePosition(clickedLink);
+        }
+
+        function removeActiveLinks() {
+            for (var i = 0; i < links.length; i++) {
+                links[i].classList.remove("active");
+            }
+        }
+
+        // Handle changing the slider position as well as ensure
+        // the correct link is highlighted as being active
+        function changePosition(link) {
+            var position = link.getAttribute("data-pos");
+
+            var translateValue = "translate3d(" + position + ", 0px, 0)";
+            wrapper.style[transformProperty] = translateValue;
+
+            link.classList.add("active");
+        }
+
+        //
+        // Dealing with Transforms
+        //
+        var transforms = ["transform",
+                    "msTransform",
+                    "webkitTransform",
+                    "mozTransform",
+                    "oTransform"];
+
+        var transformProperty = getSupportedPropertyName(transforms);
+
+        // vendor prefix management
+        function getSupportedPropertyName(properties) {
+            for (var i = 0; i < properties.length; i++) {
+                if (typeof document.body.style[properties[i]] != "undefined") {
+                    return properties[i];
+                }
+            }
+            return null;
+        }
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,162 @@
+body {
+	/*height: 100%;*/
+	margin: 0;
+	text-align: center;
+	/*width: 100%;*/
+}
+
+h1 {
+	font-size: 32px;
+  font-family: Palatino, 'Palatino Linotype', serif;
+  color: rgb(46,105,163);
+}
+
+img {
+  width: 512px;
+  height: 384px;
+}
+
+p {
+  font-size: 2rem;
+}
+
+nav {
+  background-color: #FFF;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  width: 66%;
+  /*margin-right: auto;
+  margin-left: auto;*/
+}
+
+#home-btn {
+  float: center;
+}
+
+.menu-links{
+  width: 20%;
+  /*margin-top: auto;
+	margin-bottom: auto;*/
+}
+
+#home-btn a {
+  cursor: pointer;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+#home-btn a:active {
+	top: 2px;
+}
+
+#bio-btn {
+  float: center;
+}
+
+#bio-btn a {
+  cursor: pointer;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+#bio-btn a:active {
+	top: 2px;
+}
+
+#projects-btn {
+  float: center;
+}
+
+#projects-btn a {
+  cursor: pointer;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+#projects-btn a:active {
+	top: 2px;
+}
+
+#resume-btn {
+  float: center;
+}
+
+#resume-btn a {
+  cursor: pointer;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+#resume-btn a:active {
+	top: 2px;
+}
+
+#contact-btn {
+  float: center;
+}
+
+#contact-btn a {
+  cursor: pointer;
+  border: 1px solid #204156;
+  position: relative;
+}
+
+#contact-btn a:active {
+	top: 2px;
+}
+
+nav a {
+  height: 60px;
+  line-height: 60px;
+  color: #204156;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+	font-family: Verdana, Geneva, sans-serif;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+ul {
+    list-style-type: none;
+		margin-top: auto;
+		margin-bottom: auto;
+    padding: 0;
+    width: 25%;
+    background-color: #f1f1f1;
+    height: 50%; /* Half height */
+    position: fixed; /* Make it stick, even on scroll */
+    overflow: auto; /* Enable scrolling if the sidenav has too much content */
+		font-family: Verdana, Geneva, sans-serif;
+		font-size: 24px;
+		font-style: normal;
+		font-variant: normal;
+		font-weight: 500;
+		line-height: 26.4px;
+}
+
+li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color on hover */
+li a:hover {
+    background-color: #555;
+    color: white;
+}
+
+.content {
+	overflow: hidden;
+	width: 80%;
+	padding-left: 400px;
+}
+
+
+.active {
+    background-color: #4CAF50;
+    color: white;
+}
