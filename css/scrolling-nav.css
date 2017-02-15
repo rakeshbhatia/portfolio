@@ -217,6 +217,21 @@ of those sections to manage the look and feel of the site. */
     /*background-image: url("http://www.kirupa.com/images/yellowSquare.png");*/
     background-position: center;
 }
+
+#itemTwoDescription {
+    text-align: center;
+    position: relative;
+    top: 10px;
+    display: inline-block;
+}
+
+#itemTwoImage {
+    position: absolute;
+    left: 20px;
+    top: 86px;
+    display: inline-block;
+}
+
 #itemThree {
     background-color: #1E90FF;
     /*background-image: url("http://www.kirupa.com/images/pinkSquare.png");*/
