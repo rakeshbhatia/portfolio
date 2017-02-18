@@ -190,6 +190,7 @@ of those sections to manage the look and feel of the site. */
     margin-right: auto;
     position: relative;
 }
+
 #itemOne {
     background-color: #1E90FF;
     /*background-image: url("file:///Users/rakeshbhatia/portfolio/Blocmarks_Code.jpg");*/
@@ -206,8 +207,12 @@ of those sections to manage the look and feel of the site. */
 }
 
 #itemOneImage {
-  display: flex;
-  justify-content: center;
+  /*display: flex;
+  justify-content: center;*/
+  position: absolute;
+  left: 20px;
+  top: 86px;
+  display: inline-block;
 }
 
 #itemTwo {
