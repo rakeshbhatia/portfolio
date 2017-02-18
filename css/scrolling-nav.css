@@ -202,19 +202,19 @@ of those sections to manage the look and feel of the site. */
     text-align: center; /*handles the horizontal centering*/
 }
 
-/*#itemOneDescription {
+#itemOneDescription {
     text-align: center;
     position: relative;
     top: 10px;
     display: inline-block;
-}*/
+}
 
-#itemOneImage {
+/*#itemOneImage {
   position: absolute;
   width:25%;
   height:25%;
-  text-align: center; /*handles the horizontal centering*/
-}
+  text-align: center;
+}*/
 
 *
 {
