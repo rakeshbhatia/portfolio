@@ -206,9 +206,10 @@ of those sections to manage the look and feel of the site. */
 }
 
 #itemOneImage {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+  position: absolute;
+  left: 20px;
+  top: 86px;
+  display: inline-block;
 }
 
 #itemTwo {
