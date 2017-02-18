@@ -196,10 +196,6 @@ of those sections to manage the look and feel of the site. */
     /*background-size: 388px 275.5px;*/
     background-position: center;
     display: inline-block;
-    position: absolute;
-    width:25%;
-    height:25%;
-    text-align: center; /*handles the horizontal centering*/
 }
 
 #itemOneDescription {
@@ -209,31 +205,9 @@ of those sections to manage the look and feel of the site. */
     display: inline-block;
 }
 
-/*#itemOneImage {
-  position: absolute;
-  width:25%;
-  height:25%;
-  text-align: center;
-}*/
-
-*
-{
-    padding: 0;
-    margin: 0;
-}
-
-/*handles the vertical centering*/
-.Centerer
-{
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-}
-
-.Centered
-{
-    display: inline-block;
-    vertical-align: middle;
+#itemOneImage {
+  display: flex;
+  justify-content: center;
 }
 
 #itemTwo {
