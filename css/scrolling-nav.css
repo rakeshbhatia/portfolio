@@ -191,7 +191,7 @@ of those sections to manage the look and feel of the site. */
     position: relative;
 }
 #itemOne {
-    background-color: #ADFF2F;
+    background-color: #FF7F50;
     /*background-image: url("file:///Users/rakeshbhatia/portfolio/Blocmarks_Code.jpg");*/
     /*background-size: 388px 275.5px;*/
     background-position: center;
@@ -206,14 +206,15 @@ of those sections to manage the look and feel of the site. */
 }
 
 #itemOneImage {
-    position: absolute;
-    left: 20px;
-    top: 86px;
-    display: inline-block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
 }
 
 #itemTwo {
-    background-color: #FF7F50;
+    background-color: #1E90FF;
     /*background-image: url("http://www.kirupa.com/images/yellowSquare.png");*/
     background-position: center;
 }
@@ -233,7 +234,7 @@ of those sections to manage the look and feel of the site. */
 }
 
 #itemThree {
-    background-color: #1E90FF;
+    background-color: #ADFF2F;
     /*background-image: url("http://www.kirupa.com/images/pinkSquare.png");*/
     background-position: center;
 }
