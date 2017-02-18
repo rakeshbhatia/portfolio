@@ -190,8 +190,8 @@ of those sections to manage the look and feel of the site. */
     margin-right: auto;
     position: relative;
 }
-#itemOne {
-    background-color: #FF7F50;
+#itemOne {1E90FF
+    background-color: #1E90FF;
     /*background-image: url("file:///Users/rakeshbhatia/portfolio/Blocmarks_Code.jpg");*/
     /*background-size: 388px 275.5px;*/
     background-position: center;
@@ -214,7 +214,7 @@ of those sections to manage the look and feel of the site. */
 }
 
 #itemTwo {
-    background-color: #1E90FF;
+    background-color: #FF7F50;
     /*background-image: url("http://www.kirupa.com/images/yellowSquare.png");*/
     background-position: center;
 }
