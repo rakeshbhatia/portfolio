@@ -209,8 +209,6 @@ of those sections to manage the look and feel of the site. */
     position: fixed;
     top: 50%;
     left: 50%;
-    margin-top: -50px;
-    margin-left: -100px;
 }
 
 #itemTwo {
