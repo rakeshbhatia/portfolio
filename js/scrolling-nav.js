@@ -19,7 +19,7 @@ $(function() {
 });
 
 $(".fancybox").fancybox(
-		{'width':850,
-         'height':1100,
-         'autoSize' : true,
+		{'width':425,
+         'height':550,
+         'autoSize' : false,
      	 'type':'iframe'});
