@@ -21,5 +21,5 @@ $(function() {
 $(".fancybox").fancybox(
 		{'width':850,
          'height':1100,
-         'autoSize' : false,
+         'autoSize' : true,
      	 'type':'iframe'});
