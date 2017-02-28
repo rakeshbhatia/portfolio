@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Project - Data Scraping for NBA Basketball</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+
+
+    <!-- Include required JS files -->
+    <script type="text/javascript" src="js/shCore.js"></script>
+
+    <!--
+        At least one brush, here we choose Python. You need to include a brush for every
+        language you want to highlight
+    -->
+    <script type="text/javascript" src="css/shBrushPython.js"></script>
+
+    <!-- Include *at least* the core style and default theme -->
+    <link href="css/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="css/shThemeRDark.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <!-- <a class="navbar-brand" href="index.html">Start Bootstrap</a> -->
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="project1.html">Project 1</a>
+                    </li>
+                    <li>
+                        <a href="project2.html">Project 2</a>
+                    </li>
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/project1-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Project 1</h1>
+                        <hr class="small">
+                        <span class="subheading">Data Scraping for NBA Basketball</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>Recently I became interested in scraping data from the web for NBA basketball players.
+                  I've lately gotten into daily fantasy sports, so I wanted to see if I could methodically
+                  generate optimal lineups on Fanduel using my own algorithms and techniques. </p>
+                <p>Initially, I wanted to use basketball-reference.com for this web scraping project, but
+                  after some research, I realized that they don't like their website being scraped, in
+                  general. I tried to contact them and ask for permission, but never received a response.
+                  Thus, I decided to be on the safe side and use another resource, ESPN.com.</p>
+                <p>ESPN's website doesn't present the data in as clean of a format as Basketball-Reference,
+                  so some tinkering was required in order to get all the data that I needed. ESPN essentially
+                  has a Players page which provideds links to the rosters for every team in the NBA. Upon
+                  clicking one of these links, you are taken to the roster page, which has additional links
+                  to the player page for each player on the roster. Thus, as you probably guessed, we need a
+                  Team class which serves as the common base class for all NBA teams. Additionally, we need a
+                  Player class which will store all the data for a particular player.</p>
+                <p>Below is the first portion of my Team class definition.</p>
+                <pre class="brush: python">
+                  class Team:
+                      'Common base class for all NBA teams'
+                      team_count = 0
+
+                      def __init__(self, team_name, team_link):
+                          self.team_name = team_name
+                          self.team_link = team_link
+                          self.player_links = []
+                          self.player_names = []
+                          self.player_positions = []
+                          self.game_log_links = []
+                          self.team_links = {}
+                          self.player_list = []
+                          Team.team_count += 1
+                </pre>
+                <p>When instantiating a new team, I pass in the name of the team (which, in this case, will
+                  correspond to the particular abbreviation that ESPN uses for NBA teams), along with the
+                  URL for the team's players page passed in as <font face="Inconsolata, Monaco, Consolas,
+                  'Courier New', Courier">team_link</font>. The other member variables above may seem non-
+                  intuitive at first, but I had to design my data structure in this manner, due to the
+                  construction of ESPN's web site. self.player_links is a list containing the URL for each
+                  player's ESPN profile page. I populate this list after navigating to team_link, and then I
+                  populate the self.player_names and self.player_positions lists with the requisite information
+                  from this page. </p>
+                <p>Below is my first member function for the Team object, <font face="Inconsolata, Monaco,
+                  Consolas, 'Courier New', Courier">get_players()</font>, which shows how to instantiate a
+                  BeautifulSoup object and then load it with all the html text from a particular webpage.</p>
+                <pre class="brush: python">
+                  def get_players(self):
+                        # add wait times in between getting each team's data to prevent overload
+                        wait_time = round(max(5, 10 + random.gauss(0,3)), 2)
+                        time.sleep(wait_time)
+
+                        self.team_page = urllib2.urlopen(self.team_link)
+                        self.soup = BeautifulSoup(self.team_page, 'html.parser')
+
+                        for a in self.soup.findAll('a'):
+                          if '/player/' in a['href']:
+                            self.player_links.append(a['href'])
+
+                        for i in xrange(0, len(self.player_links)):
+                            game_log_link = string.replace(self.player_links[i], '/_/', '/gamelog/_/')
+                            self.game_log_links.append(game_log_link)
+
+                        #extract the name of each player
+                        for a in self.soup.findAll('td', attrs={'class': 'sortcell'}):
+                            for b in a.findAll('a'):
+                                self.player_names.append(b.text)</pre>
+                <p></p>
+                <pre class="brush: python">
+                        #now we have links to all the player URLs for this particular team
+                        for i in xrange(0, len(self.player_links)):
+                            new_player = Player(self.team_name, self.player_names[i], self.player_links[i], self.game_log_links[i])
+                            new_player.get_season_stats()
+                            if new_player.active == False:
+                                continue
+                            new_player.get_each_game_stats()
+                            self.player_list.append(new_player)
+
+                        return self.player_list</pre>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Rakesh Bhatia 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+    <!-- Finally, to actually run the highlighter, you need to include this JS on your page -->
+    <script type="text/javascript">
+         SyntaxHighlighter.all()
+    </script>
+
+</body>
+
+</html>
