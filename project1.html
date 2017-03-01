@@ -103,15 +103,17 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>I happened to come across the BeautifulSoup library from python which enables you to "scrape" or
-                  extract content from the web. It does this by allowing you to create a BeautifulSoup object from
-                  a website's URL, which subsequently contains the html content for that particular website. Once the
+                <p>When I initially started learning Python, I wanted to do some type of small project that would help
+                  me solidify my skills in object-oriented programming (OOP), while also exploring the powerful features
+                  of Python. Early on, I happened to come across the BeautifulSoup library which enables you to "scrape"
+                  or extract content from the web. It does this by allowing you to create a BeautifulSoup object from
+                  a website's URL, which subsequently contains the html content for that particular website. Once a
                   BeautifulSoup object is created, you can use its member functions to search for specific content that
                   you are interested in. Of course, this requires inspecting the html source code beforehand so that
                   you know which tags to look for. This is essentially how Google's search engine crawls the web and
-                  searches for relevant sites.</p>
-                <p>The reason this library picqued my interest was because of my casual interest in finance and stock
-                  market investing. This interest dates back to college, where at one point I was fascinated by the
+                  searches for relevant sites that match a user's search keywords.</p>
+                <p>The reason this library picqued my interest was because of my fascination with finance and stock
+                  market investing. This interest dates back to college, where at one point I was intrigued by the
                   prospect of becoming an investment banker (however, after hearing some horror stories, I'm kind of
                   glad that didn't work out for me). Anyhow, as a small investor I simply wanted to collect information
                   about certain stocks that wasn't always readily available online in the form in which I wanted to see it.</p>
@@ -120,15 +122,19 @@
                   market sites is that there always seems to be some necessary information missing from a stock quote.
                   I've tried using everything from CNBC to Investor's Business Daily, but there was always something
                   lacking or difficult to find in terms of filtering out a subset of stocks that fit a certain criteria.
-                  In this case, I wanted a list of all the top dividend stocks, along with their market cap and 52-week change.</p>
-                <p>At first, Yahoo! Finance turned out to be the best resource for me, because it contained two out of
-                  the above three pieces of information, the dividend yield and market cap. However, the 52-week % Change
-                  was stored on a separate page, the "Statistics" page for that particular stock quote. This wouldn't have
-                  been a problem, except for the fact that the "Statistics" page data was rendered in javascript as opposed
-                  to html. This would require the use of a heavyweight library such as Splinter or Selenium, so after some
-                  more searching, I found another resource that was rendered in pure html. This resource was Barron's.
-                  Javascript web scraping is still an important topic, however, and something that I will cover in a later
-                  post.</p>
+                  In this case, I wanted a list of all the top dividend stocks, along with their market cap and 52-week
+                  price % change.</p>
+                <p>At first, Yahoo! Finance seemed to be the best resource for me, because the page for a stock quote
+                  contained two of the above three pieces of information, the dividend yield and market cap. However, the
+                  52-week price % change was stored on a separate page - the "Statistics" page for that particular stock quote.
+                  This normally wouldn't have been a problem, except for the fact that the "Statistics" page data was rendered
+                  in javascript as opposed to html. This would require the use of a heavyweight library such as Splinter or
+                  Selenium, which would enable you to load the javascript and convert it to html, and then scrape the resulting
+                  html. However, after some more searching, I found another website that was fully rendered in html. This
+                  resource was Barron's (www.barrons.com). Javascript web scraping is still an important topic, however, and
+                  something that I want to cover in a later post. For simplicity, I will first focus on html scraping with the
+                  Barron's website. The repository for this project is called stock-market-data and is accessible on github
+                  <a href="https://github.com/rakeshbhatia/stock-market-data" style="text-decoration:none; color:teal;">here.</a></p>
                 <!-- <p>This project also serves as an exercise in object-oriented programming (OOP). Initially, when I created a rough
                   first iteration for this project, I did it in a non-object-oriented manner. However, translating my code from
                   a rough script into a more structured, object-oriented program served as an excellent exercise in the power of
@@ -137,7 +143,7 @@
                   interested in. Thus, I created a common base class called Index which would store information on all stocks
                   in a particular index, and create a list of Stock objects for all the companies that the Index contained. I will
                   go over the Stock class definition shortly.</p>
-                <p>Below is the first part of my <font face="Inconsolata, Monaco, Consolas, 'Courier New', Courier">Index</font> class
+                <p>Below is the first part of my <font face="'Courier New', Courier">Index</font> class
                   definition, showing the constructor.</p>
                 <pre class="brush: python">
                   class Index:

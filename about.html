@@ -15,7 +15,7 @@
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
+    <link href="css/clean-blog.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -88,9 +88,30 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <p>Hello! I am a software developer currently looking for opportunities
-                  in python development.</p>
-                <p>I am open to both full-time and contract opportunities.</p>
-                <p>A copy of my resume is attached in case you would like to contact me. Thanks!</p>
+                  in python development. I am open to both full-time and contract opportunities.</p>
+                <p>Click on the image below to view my resume. Thanks!</p>
+                <!-- Resume Section -->
+                <h1 style="text-align: center">Resume</h1>
+                <div id = "resume_container">
+                    <div id = "resume" style="text-align: center">
+                        <!-- Trigger the Modal -->
+                        <img id="myImg" src="img/Resume.jpg" alt="My Resume" width="340px" height="440px">
+
+                        <!-- The Modal -->
+                        <div id="myModal" class="modal">
+
+                            <!-- The Close Button -->
+                            <span class="close">&times;</span>
+
+                            <!-- Modal Content (The Image) -->
+                            <img class="modal-content" id="img01">
+
+                            <!-- Modal Caption (Image Text) -->
+                            <div id="caption"></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -145,7 +166,7 @@
     <script src="js/contact_me.js"></script>
 
     <!-- Theme JavaScript -->
-    <script src="js/clean-blog.min.js"></script>
+    <script src="js/clean-blog.js"></script>
 
 </body>
 
