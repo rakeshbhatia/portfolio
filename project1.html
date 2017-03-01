@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Project - Data Scraping for NBA Basketball</title>
+    <title>Project - Data Scraping for Stock Market Analysis</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -71,7 +71,7 @@
                         <a href="about.html">About</a>
                     </li>
                     <li>
-                        <a href="project1.html">Project 2</a>
+                        <a href="project1.html">Project 1</a>
                     </li>
                     <li>
                         <a href="contact.html">Contact</a>
@@ -103,23 +103,25 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>Once I had gotten my feet wet with data scraping for NBA statistics, I decided to apply
-                  these techniques towards other applications as well. Another field that has picqued my
-                  interest in recent years has been finance and stock market investing. In fact, at one
-                  point during college I was hell-bent on becoming an investment banker (however, after
-                  hearing some horror stories, I'm kind of glad that didn't work out for me). Anyhow, as
-                  a typical small investor who only dabbles in stocks once in a while, I wanted to collect
-                  information that wasn't always readily available online in the form that I wanted to see it.</p>
-
-                <p>As an initial exercise, I wanted to generate a list of all dividend stocks in the three major
-                  indexes - Nasdaq, Standard and Poor's 500, and the Dow 30. The problem with most stock market
-                  websites is that there always seems to be some necessary information missing from a stock quote. I've
-                  used Yahoo! Finance, MarketWatch, CNBC, CNN Money, The Wall Street Journal, Investor's Business Daily,
-                  and Bloomberg, among others, and there was always something lacking or difficult to find in terms
-                  of filtering out a subset of stocks that fit a certain criteria. In this case, I wanted a list of
-                  all the top dividend stocks, along with their market cap and 52-week change.</p>
-
-                  At first, Yahoo! Finance turned out to be the best resource for me, because it contained two out of
+                <p>I happened to come across the BeautifulSoup library from python which enables you to "scrape" or
+                  extract content from the web. It does this by allowing you to create a BeautifulSoup object from
+                  a website's URL, which subsequently contains the html content for that particular website. Once the
+                  BeautifulSoup object is created, you can use its member functions to search for specific content that
+                  you are interested in. Of course, this requires inspecting the html source code beforehand so that
+                  you know which tags to look for. This is essentially how Google's search engine crawls the web and
+                  searches for relevant sites.</p>
+                <p>The reason this library picqued my interest was because of my casual interest in finance and stock
+                  market investing. This interest dates back to college, where at one point I was fascinated by the
+                  prospect of becoming an investment banker (however, after hearing some horror stories, I'm kind of
+                  glad that didn't work out for me). Anyhow, as a small investor I simply wanted to collect information
+                  about certain stocks that wasn't always readily available online in the form in which I wanted to see it.</p>
+                <p>As an initial exercise to test out BeautifulSoup's features, I wanted to generate a list of all
+                  dividend stocks in the three major indexes - Nasdaq, S&P 500, and the Dow. The problem with most stock
+                  market sites is that there always seems to be some necessary information missing from a stock quote.
+                  I've tried using everything from CNBC to Investor's Business Daily, but there was always something
+                  lacking or difficult to find in terms of filtering out a subset of stocks that fit a certain criteria.
+                  In this case, I wanted a list of all the top dividend stocks, along with their market cap and 52-week change.</p>
+                <p>At first, Yahoo! Finance turned out to be the best resource for me, because it contained two out of
                   the above three pieces of information, the dividend yield and market cap. However, the 52-week % Change
                   was stored on a separate page, the "Statistics" page for that particular stock quote. This wouldn't have
                   been a problem, except for the fact that the "Statistics" page data was rendered in javascript as opposed
@@ -132,10 +134,9 @@
                   a rough script into a more structured, object-oriented program served as an excellent exercise in the power of
                   OOP.</p> -->
                 <p>I realized that I would have to obtain information separately for each of the major indexes that I was
-                  interested in. Thus, I created a common base class called Index which would collect information on all stocks
+                  interested in. Thus, I created a common base class called Index which would store information on all stocks
                   in a particular index, and create a list of Stock objects for all the companies that the Index contained. I will
-                  go over the Stock class definition in a bit.</p>
-
+                  go over the Stock class definition shortly.</p>
                 <p>Below is the first part of my <font face="Inconsolata, Monaco, Consolas, 'Courier New', Courier">Index</font> class
                   definition, showing the constructor.</p>
                 <pre class="brush: python">
