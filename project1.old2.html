@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Project - Data Scraping for Stock Market Analysis</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="css/clean-blog.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+
+    <!-- Include required JS files -->
+    <script type="text/javascript" src="js/shCore.js"></script>
+
+    <!--
+        At least one brush, here we choose Python. You need to include a brush for every
+        language you want to highlight
+    -->
+    <script type="text/javascript" src="css/shBrushPython.js"></script>
+
+    <!-- Include *at least* the core style and default theme -->
+    <link href="css/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="css/shThemeRDark.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="highlight/styles/default.css">
+    <script src="highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <!-- <a class="navbar-brand" href="index.html">Start Bootstrap</a> -->
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="project1.html">Project 1</a>
+                    </li>
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Project 1</h1>
+                        <hr class="small">
+                        <span class="subheading">Data Scraping for Stock Market Analysis</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>When I initially started learning Python, I wanted to do some type of small project that would help
+                  me solidify my skills in object-oriented programming (OOP), while also exploring the powerful features
+                  of Python. Early on, I happened to come across the BeautifulSoup library which enables you to "scrape"
+                  or extract content from the web. It does this by allowing you to create a BeautifulSoup object from
+                  a website's URL, which subsequently contains the html content for that particular website. Once a
+                  BeautifulSoup object is created, you can use its member functions to search for specific content that
+                  you are interested in. Of course, this requires inspecting the html source code beforehand so that
+                  you know which tags to look for. This is essentially how Google's search engine crawls the web and
+                  searches for relevant sites that match a user's search keywords.</p>
+                <p>The reason this library picqued my interest was because of my fascination with finance and stock
+                  market investing. This interest dates back to college, where at one point I was intrigued by the
+                  prospect of becoming an investment banker (however, after hearing some horror stories, I'm kind of
+                  glad that didn't work out for me). Anyhow, as a small investor I simply wanted to collect information
+                  about certain stocks that wasn't always readily available online in the form in which I wanted to see it.</p>
+                <p>As an initial exercise to test out BeautifulSoup's features, I wanted to generate a list of all
+                  dividend stocks in the three major indexes - Nasdaq, S&P 500, and the Dow. The problem with most stock
+                  market sites is that there always seems to be some necessary information missing from a stock quote.
+                  I've tried using everything from CNBC to Investor's Business Daily, but there was always something
+                  lacking or difficult to find in terms of filtering out a subset of stocks that fit a certain criteria.
+                  In this case, I wanted a list of all the top dividend stocks, along with their market cap and 52-week
+                  price % change.</p>
+                <p>At first, Yahoo! Finance seemed to be the best resource for me, because the page for a stock quote
+                  contained two of the above three pieces of information, the dividend yield and market cap. However, the
+                  52-week price % change was stored on a separate page - the "Statistics" page for that particular stock quote.
+                  This normally wouldn't have been a problem, except for the fact that the "Statistics" page data was rendered
+                  in javascript as opposed to html. This would require the use of a heavyweight library such as Splinter or
+                  Selenium, which would enable you to load the javascript and convert it to html, and then scrape the resulting
+                  html. However, after some more searching, I found another website that was fully rendered in html. This
+                  resource was Barron's (www.barrons.com). Javascript web scraping is still an important topic, however, and
+                  something that I want to cover in a later post. For simplicity, I will first focus on html scraping with the
+                  Barron's website. The repository for this project is called stock-market-data and is accessible on github
+                  <a href="https://github.com/rakeshbhatia/stock-market-data" style="text-decoration:none; color:teal;">here.</a></p>
+                <!-- <p>This project also serves as an exercise in object-oriented programming (OOP). Initially, when I created a rough
+                  first iteration for this project, I did it in a non-object-oriented manner. However, translating my code from
+                  a rough script into a more structured, object-oriented program served as an excellent exercise in the power of
+                  OOP.</p> -->
+                <p>I realized that I would have to obtain information separately for each of the major indexes that I was
+                  interested in. Thus, I created a common base class called Index which would store information on all stocks
+                  in a particular index, and create a list of Stock objects for all the companies that the Index contained. I will
+                  go over the Stock class definition shortly.</p>
+                <p>Below is the first part of my <font face="'Courier New', Courier">Index</font> class
+                  definition, showing the constructor.</p>
+                <pre><code class="Python">
+                  class Index:
+                      'Common base class for all indexes'
+                      index_count = 0
+
+                      def __init__(self, name, index_file=None, index_link=None):
+                          self.name = name
+                          self.index_file = index_file
+                          self.index_link = index_link
+                          self.index_dict = {}
+                          self.stock_list = []
+                          self.stock_data = []
+                          self.out_file = '../docs/' + name.lower() + '-dividend-stocks-sorted.csv'
+                          Index.index_count += 1
+                </code></pre>
+                <p>Notice that the index_file and index_link variables are optional. This is because I obtain the Nasdaq stock list from a
+                  CSV file that is downloaded off Nasdaq's web site, whereas I obtain the stock lists for both the S&P 500 and the Dow from
+                  Wikipedia. The create_dict() member function, shown below, handles the three separate mechanisms for generating stocks
+                  associated with the indexes above. Essentially, a new dictionary called index_dict is created, with the company's ticker
+                  symbol and company name forming the key-value pair stored in the dictionary.</p>
+                <p>Let's move on to the create_dict() member function belonging to Index. </p>
+                <pre class="brush: python">
+                  def create_dict(self):
+                      if self.name == 'Nasdaq':
+                          with open(self.index_file) as csv_file:
+                              read_csv = csv.reader(csv_file, delimiter=',')
+                              for row in read_csv:
+                                  if row[1].find('iShares') == -1 and row[1].find('iPath') == -1:
+                                      self.index_dict[row[0]] = row[1]
+                      elif self.name == 'S&P 500':
+                          self.index_wiki_page = urllib2.urlopen(self.index_link)
+                          self.soup = BeautifulSoup(self.index_wiki_page, 'html.parser')
+
+                          #Store the list of s&p 500 components in dictionary
+                          for a in self.soup.findAll('table', {'class': 'wikitable sortable'}, limit=1):
+                              for b in a.findAll('tr'):
+                                  count = 1
+                                  for c in b.findAll('td', limit=2):
+                                      if count == 1:
+                                          stock_symbol = c.text
+                                          count += 1
+                                      elif count == 2:
+                                          company_name = c.text
+                                          print 'c.text = ' + c.text
+                                          self.index_dict[stock_symbol] = company_name
+                                          count = 1
+                      elif self.name == 'Dow 30':
+                          self.index_wiki_page = urllib2.urlopen(self.index_link)
+                          self.soup = BeautifulSoup(self.index_wiki_page, 'html.parser')
+
+                          #Store the list of dow 30 components in dictionary
+                          for a in self.soup.findAll('table', {'class': 'wikitable sortable'}):
+                              for b in a.findAll('tr'):
+                                  count = 1
+                                  for c in b.findAll('td', limit=3):
+                                      if count == 1:
+                                          company_name = c.text
+                                          count += 1
+                                      elif count == 2:
+                                          count += 1
+                                      elif count == 3:
+                                          stock_symbol = c.text
+                                          self.index_dict[stock_symbol] = company_name
+                                          count = 1
+                </pre>
+                <p>Lines 2-7 above handle the opening of the CSV file that stores a list of all Nasdaq dividend stocks. However, one thing
+                to keep in mind is that there are also ETFs and other funds associated with a particular index; I am not interested in
+                obtaining data for these, only for actual companies. This is why I have the if statement in line 6 - it helps filter out
+                some, but not all, of these unwanted funds from the CSV file. Additional filtering will be done in a later step.</p>
+                <p>Lines 8-24 and 25-42 are essentially the same mechanisms, but for the S&P and Dow, respectively. The urllib2.urlopen()
+                function from the BeautifulSoup library is used to load the Wikipedia html page that stores the list of index components.
+                Then, this page is given as an argument to the BeautifulSoup constructor in order to create a self.soup object, which stores
+                the pure text from the html on that page.</p>
+                <p>Once the BeautifulSoup object is created, I use the self.soup.findAll() function to obtain all the text corresponding to
+                a specific tag. This requires inspection of the html source code (right click anywhere on page -> view source). Inspection of
+                the html for the Wikipedia page revealed that the company names for the index were stored within a table corresponding to the
+                'wikitable-sortable' class. However, two additional inner loops are required to extract the text within the tr (tablerow) and
+                td (tabledata) elements within this table. The tr element stores all the information displayed for one particular stock, while
+                the 1st and 3rd td elements within a tr element store the company name and ticker symbol, respectively. This is why the loop is
+                calibrated the way that it is, with the count variable being reset after reaching 3.</p>
+                <p>Once I obtain these two pieces of text, I store them into self.index_dict, with the ticker symbol as the key value corresponding
+                to a particular company name. Once our Index object's dictionary is fully populated, the next step is to add stocks to the Index's
+                stock list. However, in order to add a stock to the list, we first have to define a type of Stock object that stores the data which
+                we are after. The Stock class definition is shown below:</p>
+                <pre class="brush: python">
+                  class Stock:
+                      'Common base class for all stocks'
+                      stock_count = 0
+
+                      def __init__(self, symbol, company):
+                          self.symbol = symbol
+                          self.company = company
+                          self.data = []
+                          Stock.stock_count += 1
+
+                      def query_stock_symbol(self):
+                          # add wait times in between getting each player's data to prevent overload
+                          wait_time = round(max(5, 10 + random.gauss(0,3)), 2)
+                          time.sleep(wait_time)
+
+                          #create a new beautiful soup object that can query the ticker symbol from barron's
+                          stock_link = 'http://www.barrons.com/quote/stock/us/xnas/%s' % (self.symbol)
+                          print "stock_link: " + stock_link
+                          page = requests.get(stock_link)
+                          if page.status_code == 404:
+                              stock_link = 'http://www.barrons.com/quote/stock/us/xnys/%s?mod=DNH_S' % (self.symbol)
+                          stock_page = urllib2.urlopen(stock_link)
+                          self.soup = BeautifulSoup(stock_page, 'html.parser')
+
+                          for a in self.soup.findAll('span', {'class':'market__price'}):
+                              print a.text
+                              stock_price_str = a.text.replace(',', '')
+                              if stock_price_str != 'N/A':
+                                  self.stock_price = float(stock_price_str)
+                              else:
+                                  self.stock_price = None
+
+                          for a in self.soup.findAll('div', {'class': 'nutrition'}):
+                              for b in a.findAll('td'):
+                                  print b.text
+                                  self.data.append(b.text)
+
+                          self.market_cap = None
+                          for i in xrange(0, len(self.data)):
+                              if self.data[i] == 'Market Value':
+                                  self.market_cap = self.data[i+1]
+                              elif self.data[i] == 'Ytd net Change':
+                                  self.ytd_net_change_str = self.data[i+1].strip('%')
+                                  if self.ytd_net_change_str != 'N/A':
+                                      self.ytd_net_change = float(self.ytd_net_change_str)
+                                  else:
+                                      self.ytd_net_change = -1
+                              elif self.data[i] == 'Div & Yield':
+                                  div_amount_str = self.data[i+1].split(' (')[0].strip(' ')
+                                  div_amount_str = div_amount_str.strip('$')
+                                  div_yield_str = self.data[i+1].split(' (')[1].strip(')')
+                                  div_yield_str = div_yield_str.strip('%')
+                                  if div_amount_str != 'N/A':
+                                      self.div_amount = float(div_amount_str)
+                                      self.div_yield = float(div_yield_str)
+                                  else:
+                                      self.div_amount = None
+                                      self.div_yield = None
+
+                      def display_count(self):
+                          print "Total Stocks %d" % Stock.stock_count
+
+                      def display_stock(self):
+                          print "Company: ", self.company,  ", Ticker Symbol: ", self.symbol
+
+                </pre>
+                <p>We see that the constructor takes two required arguments, symbol and company (which, if you recall, we are deriving
+                  from Index's member function create_dict()). Additionally, self.data is being initialized to an empty list. The
+                  query_stock_symbol() method handles the extraction of data from the particular stock quote page on barrons.com. I use
+                  this method to collect several key pieces of information, including the market cap, 52-week % change, and dividend
+                  yield. Now that our stock class is fully defined, we can jump back to finishing up the Index class. We will need a
+                  member function to add stocks to the Index object's stock list. The Index.add_stocks() function is shown below: </p>
+                <pre class="brush: python">
+                  def add_stocks(self):
+                      for key, value in self.index_dict.items():
+                          new_stock = Stock(key, value)
+                          new_stock.query_stock_symbol()
+                          if new_stock.div_yield != None:
+                              self.stock_list.append(new_stock)
+                      #Sort the stock list by yield amount, in desecending order
+                      self.stock_list.sort(key=lambda stock: stock.div_yield, reverse=True)
+                </pre>
+                <p>Essentially, I create a new Stock object and then use its query_stock_symbol method to extract its data. Remember that
+                  we are only interested in dividend stocks - this is why I added an extra if condition to check whether the value of
+                  div_yield exists or not. Once I have finished populating the stock list, I sort the list in descending order using
+                  Python's sort() feature. I used a simple lambda function as my key value argument for the sort() method (not to be
+                  confused with a dictionary key). The lambda function evaluates to the value of the stock's div_yield member variable.</p>
+                <p>Great - we're almost done! However, we still need to output the data to a CSV file so that we can actually visualize it.
+                  This task is handled in the from_dict_to_csv() function, shown below.</p>
+                <pre class="brush: python">
+                  def from_dict_to_csv(self):
+                      self.add_stocks()
+                      self.headings = ['Company','Symbol','Current Price','Market Cap','Dividend', 'Yield', '52-Week Return']
+                      for i in xrange(0, len(self.stock_list)):
+                          new_dict = {}
+                          new_dict['Company'] = self.stock_list[i].company
+                          new_dict['Symbol'] = self.stock_list[i].symbol
+                          new_dict['Current Price'] = self.stock_list[i].current_price
+                          new_dict['Market Cap'] = self.stock_list[i].market_cap
+                          new_dict['Dividend'] = self.stock_list[i].div_amount
+                          if self.stock_list[i].div_yield != None:
+                              new_dict['Yield'] = str(self.stock_list[i].div_yield) + '%'
+                          else:
+                              new_dict['Yield'] = 'N/A'
+                          if myNewStockList[i].returns != None:
+                              new_dict['52-Week Return'] = str(self.stock_list[i].returns) + '%'
+                          else:
+                              new_dict['52-Week Return'] = 'None'
+                          self.stock_data.append(new_dict)
+
+                      try:
+                          with open(self.out_file, "wb") as csv_file:
+                              writer = csv.DictWriter(csv_file, fieldnames=self.headings, dialect='excel', delimiter=',', quoting=csv.QUOTE_NONNUMERIC)
+                              writer.writeheader()
+                              for data in self.stock_data:
+                                  writer.writerow(data)
+
+                      except IOError as (errno, strerror):
+                          print("I/O error({0}): {1}".format(errno, strerror))
+                </pre>
+                <p>Nothing too fancy here, just a straightforward iteration through the stock list and utilizing python's csv module to write
+                  the data to an output file. The remainder of my overall program, stock_data.py, is shown below. Everything is encapsulated
+                  underneath the global function generate_dividend_stocks().</p>
+                <pre class="brush: python">
+                  def generate_dividend_stocks():
+                      nasdaq_file = '../docs/dividend-stocks-nasdaq.csv'
+                      nasdaq_index = Index('Nasdaq', nasdaq_file)
+                      nasdaq_index.create_dict()
+                      nasdaq_index.from_dict_to_csv()
+
+                      sp_link = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+                      sp_index = Index('S&P 500', sp_link)
+                      sp_index.create_dict()
+                      sp_index.from_dict_to_csv()
+
+                      dow_link = 'https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average#Components'
+                      dow_index = Index('Dow', dow_link)
+                      dow_index.create_dict()
+                      dow_index.from_dict_to_csv()
+
+                  def main():
+                      generate_dividend_stocks()
+
+                  if __name__ == '__main__':
+                      sys.exit(main())
+                </pre>
+                <p>Of course, you could extend the OOP functionality even further, possibly creating a StockMarket object that stores multiple indexes,
+                  but I strayed away from doing this initially just for simplicity. That's it for this post! In my next article, I will discuss what we
+                  can do with this data, now that we have collected it all in one place, as well as further knobs/tweaks we can add to the program above.
+                  Thanks for reading!</p>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Rakesh Bhatia 2017</p>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+    <!-- Finally, to actually run the highlighter, you need to include this JS on your page -->
+    <script type="text/javascript">
+         SyntaxHighlighter.all()
+    </script>
+
+</body>
+
+</html>

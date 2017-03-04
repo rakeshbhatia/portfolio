@@ -3,18 +3,50 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
-body {
+ /* html {
+   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+   font-size: 16px;
+   line-height: 1.5;
+ }
+ @media (min-width: 38em) {
+   html {
+     font-size: 20px;
+   }
+ } */
+
+/* body {
   font-family: 'Lora', 'Times New Roman', serif;
   font-size: 20px;
   color: #333333;
+} */
+
+body {
+  /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  color: #333333;
 }
+/*html {
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+}
+@media (min-width: 48em) {
+  html {
+    font-size: 16px;
+  }
+}
+@media (min-width: 58em) {
+  html {
+    font-size: 20px;
+  }
+}*/
 p {
   line-height: 1.5;
   margin: 30px 0;
 }
-p a {
+/*p a {
   text-decoration: underline;
-}
+}*/
 h1,
 h2,
 h3,
@@ -520,3 +552,72 @@ body {
         width: 100%;
     }
 }
+
+/* Code */
+/*code,
+pre {
+  font-family: Menlo, Monaco, "Courier New", monospace;
+}
+code {
+  padding: .25em .5em;
+  font-size: 85%;
+  color: #bf616a;
+  background-color: #f9f9f9;
+  border-radius: 3px;
+}
+pre {
+  display: block;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  font-size: .8rem;
+  line-height: 1.4;
+  white-space: pre;*/
+/*  white-space: pre-wrap;*/
+/*  word-break: break-all;*/
+/*  word-wrap: break-word;*/
+/*  overflow-x:scroll;
+  background-color: #f9f9f9;
+}
+pre code {
+  padding: 0;
+  font-size: 100%;
+  color: inherit;
+  background-color: transparent;
+}*/
+
+/* Body text */
+/*p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+strong {
+  color: #303030;
+}*/
+
+/*.syntax {
+    clear: both;
+}
+
+.syntax pre {
+    background-color: transparent;
+}
+
+pre {
+    font-family: 'Consolas', 'DejaVu Sans Mono',
+                 'Bitstream Vera Sans Mono', monospace;
+    font-family: Menlo, Monaco, "Courier New", monospace;
+    font-size: 13px;
+    letter-spacing: 0.015em;
+    line-height: 120%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background-color: #f8f8f8;
+}
+
+pre a {
+    color: inherit;
+    text-decoration: underline;
+}*/
