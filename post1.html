@@ -84,9 +84,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="page-heading">
-                        <h1>February 24, 2017</h1>
+                        <h1>Pythonic Adventures</h1>
                         <hr class="small">
-                        <span class="subheading">Data Scraping for Stock Market Analysis</span>
+                        <span class="subheading">Stock Market Data Scraping with BeautifulSoup</span>
                     </div>
                 </div>
             </div>
@@ -110,12 +110,33 @@
                   the web which would be too tedious to do manually. In this case, I wanted a list of all the top dividend
                   stocks, along with their market cap and 52-week price % change. </p>
                 <p>I decided to use <a href="http://www.barrons.com/" style="color: teal">Barron's</a> stock website, since
-                  it contained all the information above. Additionally, it was fully rendered in html, helping me avoid an
+                  it contained all the information above. Additionally, it was fully rendered in HTML, helping me avoid an
                   extra layer of detail by not having to scrape javascript content. However, note that many websites don't
                   like being scraped by automated scripts or programs, so we must take care to introduce delays in between
                   our URL requests and not overload the website with too many requests in a short period of time. After all,
-                  we might be collecting information on hundreds or even thousands of different stocks at once. Before we can
-                  do anything, we will first need to declare the required imports, as shown below.</p>
+                  we might be collecting information on hundreds or even thousands of different stocks at once.</p>
+                <p>Before visiting Barron's, we first need a list of all the components in a particular stock index that we
+                  are targeting. This list can be easily obtained from a source like Wikipedia, which has a page entirely
+                  devoted to listing all the companies in the S&P 500 and Dow 30. It does not have one for Nasdaq, however,
+                  so we need to get a little creative to obtain the Nasdaq stock list. Luckily Nasdaq is nice enough to provide
+                  such a list, downloadable in CSV format, right off their site. Therefore, web scraping will only be required
+                  to get the components for the other two indexes. Both Wiki pages for S&P and the Dow are similarly structured,
+                  so let's go ahead and visit the S&P 500 components wikipedia <a href="https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+                  style="color: teal">page</a>. Right-click &#8594; inspect to pull up the following view:</p>
+                <img src="img/wiki-screenshot.jpg" alt="wiki inspect screenshot" style='height: 100%; width: 100%; object-fit: contain'/>
+                <p>Inspecting the HTML source code reveals that there is a table element
+                  that contains a bunch of table-row (tr) elements. Each tr element is devoted to one company, and it is made up of multiple
+                  table-data (td) elements. These td elements contain the company name and ticker symbol which we will need to store in some
+                  type of data structure before looking up the stock quote in Barron's. A dictionary works well for this.
+                  Now let's take a look at Barron's website. Enter the stock quote for a company of your choice and right-click &#8594; inspect
+                  again:</p>
+                <img src="img/barrons-screenshot.jpg" alt="barron's inspect screenshot" style='height: 100%; width: 100%; object-fit: contain'/>
+                <p>Notice that the data for a stock quote is enclosed within a div belonging to the class "nutrition"...🤔 (don't ask me,
+                  I'm not a Barron's web developer). Within this appropriately named div, we see another table element containing td and
+                  tr elements which have our specific pieces of data. Notice a pattern here - numbers are frequently displayed using table
+                  elements in HTML, so you will get used to recognizing this as you get more experience with BeautifulSoup. Now that we've
+                  examined the HTML, we can proceed to start writing our web scraper. Before we can do anything, we will first need to declare
+                  the required imports. Let's add these to the top of our file.</p>
                 <pre><code class="language-python">"""Program to collect and present stock market data for Nasdaq, S&P 500, and Dow 30 indexes."""
 import os
 import sys
@@ -129,9 +150,9 @@ import requests
 import random
 import bs4
 from bs4 import BeautifulSoup</code></pre>
-                <p>We will need to obtain information separately for each of the major indexes that that we want to collect
+                <p>As I mentioned before, we'll need to obtain information separately for each of the major indexes that that we want to collect
                   stock data for. Therefore, we can create a common base class called <code>Index</code> which stores information
-                  on stocks that belong to it. Let's go ahead and create this class. The Index class definition is shown below.</p>
+                  on stocks that belong to it. Here is the <code>Index</code> class definition:</p>
                 <pre><code class="language-python">class Index:
     def __init__(self, name, index_link):
         self.name = name
@@ -146,27 +167,23 @@ from bs4 import BeautifulSoup</code></pre>
             self.create_dict_from_csv()
         elif self.name == 'S&P 500' or self.name == 'Dow 30':
             self.create_dict_from_web()</code></pre>
-                <p>Notice that the index_file and index_link variables in the constructor are optional. This is because the Nasdaq stock list
-                  is obtained from a CSV file that is downloaded <a href="http://www.nasdaq.com/dividend-stocks/" style="color:teal">here</a>,
-                  whereas we obtain the stock lists for both the S&P 500 and the Dow from Wikipedia. Nasdaq was kind enough to provide us with
-                  this informationa in a CSV file, which eliminates the need for an additional web scraping process. The <code>create_dict()</code>
-                  member function handles the separate mechanisms for generating stocks associated with these three indexes. Essentially,
-                  a new dictionary called <code>index_dict</code> is created, with the company's ticker symbol being the key value that matches
-                  to a particular company name. This will enable easy lookup for the subsequent web scraping operations.</p>
-                <p>We see that <code>create_dict()</code> is choosing between two helper functions depending on the index name. Let's take a look
-                  at the first one, <code>create_dict_from_csv()</code> which handles the Nasdaq part.
+                <p>The <code>create_dict()</code> member function handles the separate mechanisms for generating stocks associated with the three
+                  indexes. Essentially, a new dictionary called <code>index_dict</code> is initialized in the constructor, with the company's ticker
+                  symbol being the key value that matches to a particular company name. This will enable easy lookup for the subsequent web scraping
+                  operations. Notice that <code>create_dict()</code> is choosing between two helper functions depending on the index name. Let's take
+                  a look at the first one, <code>create_dict_from_csv()</code>, which handles the Nasdaq part.
                 <pre><code class="language-python">def create_dict_from_csv(self):
     with open(self.index_file) as csv_file:
         read_csv = csv.reader(csv_file, delimiter=',')
         for row in read_csv:
             if row[1].find('iShares') == -1 and row[1].find('iPath') == -1:
                 self.index_dict[row[0]] = row[1]</code></pre>
-                <p>We can see that it handles the opening of <code>self.index_file</code>, the CSV file containing Nasdaq's dividend
+                <p>This method handles the opening of <code>self.index_file</code>, the CSV file containing Nasdaq's dividend
                   stocks. However, one thing to keep in mind is that there are also ETFs and other funds associated with a particular
                   index; we are not interested in obtaining data for these, only for actual companies. This is why I have the <code>if
                   </code> statement - it helps filter out some, but not all, of these unwanted funds from the CSV file (those identifiable
                   with iShares or iPath). Additional filtering for harder-to-identify ETFs and funds will be done in a later step. Now
-                  let's take a look at the next function, <code>create_dict_from_web()</code>, to see how to create a BeautifulSoup
+                  let's take a look at the next method, <code>create_dict_from_web()</code>, to see how to create a BeautifulSoup
                   object and parse it.</p>
                 <pre><code class="language-python">def create_dict_from_web(self):
     # Create a new URL request
@@ -211,13 +228,13 @@ from bs4 import BeautifulSoup</code></pre>
                         stock_symbol = c.text
                         self.index_dict[stock_symbol] = company_name
                         count = 1</code></pre>
-                <p>As I mentioned before, Barron's - along with many other websites - don't like being browsed or scraped by programs. When
-                urllib2 tries to get a website, the website sees urllib2 as <code>Python-urllib/x.y</code> (x and y refer to the major and
-                minor version numbers, respectively, for the Python release). However, this identifier can confuse the site since it does not
-                identify with any browser. It is possible to use a <code>user_agent</code> header so that <code>urllib2</code> can identify
-                itself as one of the standard browsers. In our case the request will identify itself as a version of Internet Explorer with
-                the dictionary of headers passed to <code>urllib2.Request()</code>. This can help avoid unexpected HTTP errors, since the website
-                we are scraping will think <code>urllib2</code> is just another standard web browser.</p>
+                <p>Don't forget that many websites don't like being browsed or scraped by programs. When <code>urllib2</code> tries to
+                get a website, the website sees <code>urllib2</code> as <code>Python-urllib/x.y</code> (<code>x</code> and <code>y</code>
+                refer to the major and minor version numbers, respectively, for the Python release). However, this identifier can confuse
+                the site since it does not identify with any browser. It is possible to set a <code>user_agent</code> header so that <code>
+                urllib2</code> can identify itself as one of the standard browsers. In our case the request will identify itself as a version
+                of Internet Explorer with the dictionary of headers passed to <code>urllib2.Request()</code>. This can help avoid unexpected
+                HTTP errors, since the website we are scraping will think <code>urllib2</code> is just another standard web browser.</p>
                 <p>Enclosing the call to <code>urllib2.urlopen()</code> within a <code>try-except</code> block will help us catch any exceptions
                 that may occur when trying to access the Wikipedia page. If <code>urllib2.urlopen()</code> is successful, we can proceed to create
                 our BeautifulSoup object, <code>self.soup</code>. We use <code>urllib2.urlopen()</code> to fetch a URL-like object from the website
@@ -231,20 +248,18 @@ from bs4 import BeautifulSoup</code></pre>
                 dictionary. We must use a <code>count</code> variable to keep track of where we are while looping through the tr elements;
                 the two pieces of information that we want are stored in the 1st and 2nd td elements belonging to a particular tr element
                 (1st and 3rd for the Dow Components Wikipedia page). Once we have finished adding all the stocks to our dictionary, we can
-                proceed to looking up the stock quotes in an automated manner.</p>
-                <p>Once our <code>Index</code> object's dictionary is fully populated, the next step is to add stocks to the Index's stock list.
-                  We must first define our Stock class before we can populate <code>self.stock_list</code>. Here is the Stock class definition:</p>
+                proceed to looking up the stock quotes in an automated manner. The next step is to add stocks to the Index's stock list.
+                Let's define our Stock class before we populate <code>self.stock_list</code>.</p>
                 <pre><code class="language-python">class Stock:
     def __init__(self, symbol, company):
         self.symbol = symbol
         self.company = company
-        self.data = []
-    ...</code></pre>
-                <p>We see that the constructor takes two required arguments, <code>symbol</code> and <code>company</code> (which, if you recall,
-                  we are deriving from Index's member function <code>create_dict())</code>. Additionally, <code>self.data</code> is being initialized
+        self.data = []</code></pre>
+                <p>The constructor takes two required arguments, <code>symbol</code> and <code>company</code> (which, if you recall, we are deriving
+                  from the <code>Index</code> member function <code>create_dict())</code>. Additionally, <code>self.data</code> is being initialized
                   to an empty list. This will store the relevant data that we are interested in extracting for a particular stock. Now that we have a
-                  skeleton for our <code>Stock</code>object, let's switch gears back to the <code>Index</code> class definition and define an <code>
-                  add_stocks()</code> function:</p>
+                  skeleton for our <code>Stock</code>object, let's switch gears back to the <code>Index</code> class definition and define a method to
+                  add stocks to our list.</p>
                 <pre><code class="language-python">def add_stocks(self):
     for key, value in self.index_dict.items():
         new_stock = Stock(key, value)
@@ -382,8 +397,8 @@ for i in xrange(0, len(self.data)):
                 <p>Now that we have queried our stock symbol, we can add the stock to <code>stock_list</code>, as long as it is a
                 dividend stock. We are not interested in non-dividend stocks for this exercise. Once we populate the list, we need
                 to sort it, which can be easily achieved using Python's <code>sort</code> feature. This method takes a key value as
-                its primary argument. Notice that I use a <code>lambda</code> function which evaluates to the value of <code>div_yield
-                </code> as my <code>key</code> value. Additionally, we set <code>reverse=True</code> so that the list is
+                its primary argument. Notice that we use a <code>lambda</code> function which evaluates to the value of <code>div_yield
+                </code> as the <code>key</code> value. Additionally, we set <code>reverse=True</code> so that the list is
                 sorted in descending order (the option can be left empty if you want ascending order).</p>
                 <p>Great! We've covered everything that involes scraping the requisite data from Barron's website. However, now we want
                 to see the data printed out in some form - like a CSV file. The following method, <code>from_dict_to_csv()</code>,
@@ -442,10 +457,10 @@ for i in xrange(0, len(self.data)):
 
     if __name__ == '__main__':
         sys.exit(main())</code></pre>
-                <p>Everything is encapsulated underneath the function <code>generate_dividend_stocks()</code>, in which I create my three
+                <p>Everything is encapsulated underneath the function <code>generate_dividend_stocks()</code>, in which we create the three
                 separate stock indexes and print out a separate CSV file for each one. Running the program, we can generate an output file
                 like the one shown below for the Dow 30. Note that the stocks are listed in order of decreasing yield %.</p>
-                <img src="img/stock_list.jpg" alt="dow 30 stocks list" width="715.5px" height="781.5px">
+                <img src="img/stock_list.jpg" alt="dow 30 stocks list" style='height: 100%; width: 100%; object-fit: contain'/>
                 <p>Be sure to check out the <a href="https://github.com/rakeshbhatia/stock-market-data" style="color:teal">Github</a> repository
                 if you want to download the source code for yourself. Thanks for reading!</p>
             </div>
