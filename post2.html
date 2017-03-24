@@ -67,9 +67,9 @@
                     <!--<li>
                         <a href="project1.html">Project 1</a>
                     </li>-->
-                    <li>
+                    <!--<li>
                         <a href="contact.html">Contact</a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -102,12 +102,11 @@
                   rendered in HTML, we could simply use BeautifulSoup on its own to extract the required content. However,
                   BeautifulSoup alone will not work if the content is embedded in javascript. For this we need to use
                   PhantomJS and Selenium.</p>
-                <p>My primary motivation for this tutorial is that it took me quite a bit of time to figure out how to do
-                  this (seemingly) simple task: scraping javascript content using Python. The documentation for Selenium
-                  and PhantomJS seemed a bit non-intuitive and difficult to grasp at first. Once I was able to figure out
-                  how to do this task, I envisioned creating a sort of step-by-step "cheat sheet" that would enable others
-                  to pick this up relatively quickly, without having to bury themselves in a web of countless Google searches
-                  like I did.</p>
+                <p>My primary motivation for this tutorial is that the documentation for Selenium and PhantomJS is quite
+                  convoluted, making a seemingly basic javascript scraping task seem complicated and non-intuitive. Once I
+                  was able to figure it out, however, I envisioned creating a sort of step-by-step "cheat sheet" that would
+                  enable others to pick this up relatively quickly, without having to bury themselves in a web of countless
+                  Google and Stack Overflow searches like I did.</p>
                 <p>For this small project, it is advisable to create a virtual environment so that we can keep Selenium and
                   PhantomJS packaged locally with this project. The steps are shown below:</p>
                 <pre><code class="language-python"></code></pre>
@@ -138,20 +137,70 @@
 
                 <img src="img/yahoo-finance-screenshot-2.jpg" alt="yahoo inspect screenshot 2" style='height: 100%; width: 100%; object-fit: contain'/>
 
-                <p>We can keep our <code>Index</code> class the same as from my previous post, which describes web scraping pure HTML content
-                  from Barron's stock website. In case you didn't see it, <a href="#">here</a> is the link to this post. Since we are changing
-                  the website which we use to query stock quotes from Barron's to Yahoo! Finance, we only need to worry about modifying the
-                  <code>query_stock_symbol()</code> method for our <code>Stock</code> class. </p>
+                <p>Now we can start writing our scraper. Unlike my last post, which contained more complex data structures, here we'll just define
+                  one <code>StockQuote</code> class to illustrate the power of Selenium and PhantomJS.</p>
 
-                <pre><code class="language-python">
+                <pre><code class="language-python">class StockQuote:
+    def __init__(self, symbol, company):
+        self.symbol = symbol
+        self.company = company
 
-                </code></pre>
+    def scrape_yahoo(self, div=0):
+        # Start with Yahoo's base URL format and use string replace for our current stock symbol
+        url = 'http://finance.yahoo.com/quote/%s/key-statistics?p=%s/' % (self.symbol, self.symbol)
 
+        # Instantiate the driver
+        driver = webdriver.PhantomJS()
+        driver.get(url)
+        driver.implicitly_wait(20)
 
+        # Use the XPath to get Beta value
+        elem = driver.find_element_by_xpath("//*[@id='main-0-Quote-Proxy']/section/div[2]/section/div/section/div[2]/div[2]/div/div[1]/table/tbody/tr[1]/td[2]")
 
+        # Store the value
+        self.beta = elem.text</code></pre>
 
-                <p>Be sure to check out the <a href="https://github.com/rakeshbhatia/stock-market-data" style="color:teal">Github</a> repository
-                if you want to download the source code for yourself. Thanks for reading!</p>
+                <p>The <code>StockQuote</code> class is relatively simple, with the constructor setting the <code>self.symbol</code>
+                  and <code>self.company</code> variables to the values that are passed in. The interesting part of the code begins
+                  with the <code>scrape_yahoo()</code> function. First, we need to define our <code>url</code> string. The Yahoo URL
+                  that stores key statistics for a particular stock contains the stock symbol twice, which is how each URL differentiates
+                  itself from each other. Therefore, we just use string replace to set the unique <code>url</code> string for each stock.</p>
+                <p>Now for the tricky part. In order to utilize PhantomJS, we need to instantiate a <code>driver</code> by using the base
+                  call to <code>webdriver.PhantomJS()</code>. PhantomJS is essentially a headless WebKit for website testing. This means that
+                  it essentially uses a "virtual" browser rather than actually opening up the browser interface. This enables much faster unit
+                  tests for websites, since the overhead of browser startup and shutdown is avoided. We need to call the <code>get()</code>
+                  member function belonging to <code>driver</code>, passing our <code>url</code> variable in as the main argument. Its
+                  generally a good practice to add a specified wait time, especially if you are scraping many different URLs at once. Let's
+                  take a closer look at the next line of code.</p>
+                  <pre><code class="language-python"># Use the XPath to get Beta value
+elem = driver.find_element_by_xpath("//*[@id='main-0-Quote-Proxy']/section/div[2]/section/div/section/div[2]/div[2]/div/div[1]/table/tbody/tr[1]/td[2]")</code></pre>
+                <p>We use the <code>find_element_by_xpath()</code> method to extract the element corresponding to a particular XPath. Take a
+                  second to notice the way the XPath string is structured - its essentially the HTML directory tree for the element we are
+                  scraping. This is why the last part of the XPath string is <code>/table/tbody/tr[1]/td[2]</code> which corresponds to the HTML source
+                  we inspected when looking at Yahoo's website. The stock's Beta value is stored in the second td element, which is why the XPath
+                  ends in <code>td[2]</code>.</p>
+                <p>Once we instantiate <code>elem</code> to the element we are extracting, we can access its <code>text</code> member variable to
+                  extract the string that is stored under that tag. We can then simply store <code>elem.text</code> within the <code>StockQuote</code>
+                  member variable <code>self.beta</code>. Let's run a simple test case in our <code>main</code> method to see if the program correctly
+                  scrapes the Beta value for Apple stock (ticker symbol: AAPL).</p>
+                <pre><code class="language-python">def main():
+    # Test out one quote to see if correct text is returned
+    my_quote = StockQuote('AAPL', 'Apple')
+    my_quote.scrape_yahoo()
+    print my_quote.beta
+
+if __name__ == '__main__':
+    sys.exit(main())</code></pre>
+                <p>We create a new <code>StockQuote</code> object and name it <code>my_quote</code>, and call the <code>scrape_yahoo()</code> method.
+                  We can run the program to see the output printed to the console:</p>
+                <img src="img/yahoo-scraper-console-screenshot.jpg" alt="yahoo scraper console screenshot" style='height: 100%; width: 100%; object-fit: contain'/>
+                <p>Sure enough, the beta value printed out matches correctly with the value 1.45 listed on the Yahoo page. Hopefully you can now realize
+                  the power of Python with Selenium and PhantomJS to scrape javascript-embedded content from the web, among its many other uses. You can just
+                  follow the same steps outlined in this post for each piece of data you need to scrape. If you wanted to scrape the beta value for many different
+                  stocks at once, for example, the corresponding XPath should be the same for each stock quote's Yahoo page. Thus, you could just put everything in
+                  a <code>for</code> loop and simply make sure to change the value of <code>url</code> every time. Be sure to check out the
+                  <a href="https://github.com/rakeshbhatia/stock-market-data" style="color:teal">Github</a> repository if you want to download the source code for
+                  yourself. Thanks for reading!</p>
             </div>
         </div>
     </div>
