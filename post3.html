@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Project - Data Scraping for Stock Market Analysis</title>
+    <title>Project - Collecting NBA Player Data from ESPN</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -86,7 +86,7 @@
                     <div class="page-heading">
                         <h1>Python Blog</h1>
                         <hr class="small">
-                        <span class="subheading">JavaScript Web Scraping with PhantomJS and Selenium</span>
+                        <span class="subheading">Building a Daily Fantasy Basketball Framework with Python: Part 1</span>
                     </div>
                 </div>
             </div>
@@ -97,31 +97,69 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>In my previous post, I described how to create data structures for scraping stock market data from the
-                  web, using Barron's as an example. Since the data we wanted to scrape from Barron's website was fully
-                  rendered in HTML, we could simply use BeautifulSoup on its own to extract the required content. However,
-                  BeautifulSoup alone will not work if the content is embedded in JavaScript. For this we need to use
-                  PhantomJS and Selenium.</p>
+                <p>The last couple years have seen me dabbling in daily fantasy sports (dfs) - mostly in basketball, since it's my
+                  favorite sport, but a little bit of football as well. My experience playing in a few daily fantasy
+                  contests on Fanduel and DraftKings exposed me to just how competitive and and lucrative this industry
+                  really is. There are a frequent number of contests with thousands upon thousands of participants, with
+                  cash prizes that can exceed hundreds of thousands of dollars - <strong>for a single contest</strong>!
+                  Initially I realized that it was incredibly hard to casually pick a lineup of players purely based
+                  on your "intuition"; very rarely would you be able to win money this way. You need to develop some type
+                  of software framework that can help you collect data on different players, and make predictions about
+                  how they will perform, based on various metrics. This post is part 1 in a series that focuses on creating
+                  such a framework for daily fantasy basketball, but the basic framework and methodology can be modified and
+                  extended for other sports as well.</p>
+                <p>Basketball is, of course, a very simple sport. Simple in its objective, but complicated in its execution.
+                  They also say that the NBA is very predictable. This is somewhat misleading - yes, the game is fairly
+                  predictable from a team perspective, as in you know who are the top teams every year that are likely to win
+                  a championship and/or win many regular season games. However, on an individual basis the sport is not
+                  nearly as predictable as one might guess. Even the top players - who are generally very consistent from game
+                  to game - can have wild fluctuations in their performance due to various factors. Being able to gauge the
+                  likelihood of some of these fluctuations goes a long way toward being a winning daily fantasy basketball
+                  player. The key to winning money lies in being able to predict the <strong>unpredictable</strong>. This,
+                  obviously, is what separates the winners from the pack. Anybody can predict that LeBron James will most
+                  likely play well on any given night, but who's going to be the lucky person that rosters Allen Crabbe
+                  when he's priced at the minimum and somehow explodes for 30 fantasy points off the bench?</p>
+                <p>In order to make the process of creating lineups for daily fantasy basketball easier, you need to have
+                  some sort of baseline framework in place that can help you make decisions. Basketball may be a predictable
+                  sport, but how do you analyze all the metrics involved in making player predictions? There are nearly 400
+                  players in the NBA, and each player can play a maximum of 82 games per year. That's a lot of data. In this
+                  article, which is part 1 in a series, I will focus on how you can use Python to easily collect and store data
+                  for all NBA players. Once the data is in place (i.e., in a CSV file), you can easily run other tools on the
+                  data to figure out different types of trends and characteristics for each player.</p>
+                <p>For example, you could write a script to determine whether a player plays better against a particular team
+                  when he faces them on the road, as opposed to at home. Many daily fantasy sites have such frameworks in place
+                  and charge a hefty fee per month for you to use their sophisticated tools and projection systems. Why pay them
+                  when you can create a reasonable facsimile of their tools for your own usage? After all, statistical data on any
+                  athlete is readily available on the web. For this exercise, we will use ESPN for obtaining the NBA player data.
+                  Anyone who has read my previous two posts know that I am pretty gung-ho about web scraping. When I first started
+                  playing around with web scraping, I felt like a kid in a toy store. Its an incredibly powerful tool which, if used
+                  responsibly, can help automate and streamline a variety of different data analysis tasks. Obviously, learning from
+                  a particular set of data is at the heart of any statistical analysis. But you need some way of getting the data
+                  first - and presenting it in a form which easily usable. This is what I will discuss in this post, which is part
+                  1 in a series on using Python for daily fantasy sports.</p>
+                <p>If you already read my previous scraping-related blogs, which focused on data collection for the stock market,
+                  then you already have a pretty good idea of how to use BeautifulSoup, Selenium and PhantomJS for scraping both
+                  HTML and JavaScript content. However, if you
+
                 <p>My primary motivation for this tutorial is that the documentation for Selenium and PhantomJS is quite
-                  convoluted, making a seemingly basic JavaScript scraping task seem complicated and non-intuitive. Once I
+                  convoluted, making a seemingly basic javascript scraping task seem complicated and non-intuitive. Once I
                   was able to figure it out, however, I envisioned creating a sort of step-by-step "cheat sheet" that would
                   enable others to pick this up relatively quickly, without having to bury themselves in a web of countless
-                  Google and Stack Overflow searches like I did. Before we begin, first install Selenium and PhantomJS from
-                  your terminal, using Brew:</p>
-                <!--<p>For this small project, it is advisable to create a virtual environment so that we can keep Selenium and
+                  Google and Stack Overflow searches like I did.</p>
+                <p>For this small project, it is advisable to create a virtual environment so that we can keep Selenium and
                   PhantomJS packaged locally with this project. The steps are shown below:</p>
                 <pre><code class="language-python"></code></pre>
-                <p>Now, let's install Selenium and PhantomJS using Brew:</p>-->
 
-                <pre><code class="language-python">$ pip install selenium
-$ brew install phantomjs</code></pre>
+                <p>Now, let's install Selenium and PhantomJS using Brew:</p>
 
-                <p>Now that we have our required utilities set up, we need to inspect the HTML source code for the
-                JavaScript-rendered site that we want to scrape. If you just try to view the source, you will only see the
-                JavaScript sections added under the <code>script</code> tag. We need to inspect the source in order to see
-                the JavaScript executed and loaded as HTML. Then we must navigate through the web of nested HTML tags in order
-                to find the content we are looking for. The resulting HTML after JavaScript content is loaded is usually quite
-                complex and intricate, much more so than a bare-bones HTML webpage (this makes intuitive sense, since JavaScript
+                <pre><code class="language-python"></code></pre>
+
+                <p>Awesome. Now that we have our required utilities set up, we need to inspect the HTML source code for the
+                javascript-rendered site that we want to scrape. If you just try to view the source, you will only see the
+                javascript sections added under the <code>script</code> tag. We need to inspect the source in order to see
+                the javascript executed and loaded as HTML. Then we must navigate through the web of nested HTML tags in order
+                to find the content we are looking for. The resulting HTML after javascript content is loaded is usually quite
+                complex and intricate, much more so than a bare-bones HTML webpage (this makes intuitive sense, since javascript
                 handles more complex tasks than those which can be done by HTML alone).</p>
 
                 <img src="img/yahoo-finance-screenshot-1.jpg" alt="yahoo inspect screenshot 1" style='height: 100%; width: 100%; object-fit: contain'/>
@@ -140,6 +178,7 @@ $ brew install phantomjs</code></pre>
 
                 <p>Now we can start writing our scraper. Unlike my last post, which contained more complex data structures, here we'll just define
                   one <code>StockQuote</code> class to illustrate the power of Selenium and PhantomJS.</p>
+
 
                 <pre><code class="language-python">class StockQuote:
     def __init__(self, symbol, company):
@@ -196,7 +235,7 @@ if __name__ == '__main__':
                   We can run the program to see the output printed to the console:</p>
                 <img src="img/yahoo-scraper-console-screenshot.jpg" alt="yahoo scraper console screenshot" style='height: 100%; width: 100%; object-fit: contain'/>
                 <p>Sure enough, the beta value printed out matches correctly with the value 1.45 listed on the Yahoo page. Hopefully you can now realize
-                  the power of Python with Selenium and PhantomJS to scrape JavaScript-embedded content from the web, among its many other uses. You can just
+                  the power of Python with Selenium and PhantomJS to scrape javascript-embedded content from the web, among its many other uses. You can just
                   follow the same steps outlined in this post for each piece of data you need to scrape. If you wanted to scrape the beta value for many different
                   stocks at once, for example, the corresponding XPath should be the same for each stock quote's Yahoo page. Thus, you could just put everything in
                   a <code>for</code> loop and simply make sure to change the value of <code>url</code> every time. Be sure to check out the
