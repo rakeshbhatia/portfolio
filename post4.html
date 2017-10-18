@@ -99,116 +99,376 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <p>The last couple years have seen me dabbling in daily fantasy sports (dfs) - mostly in basketball, since it's my
                   favorite sport, but a little bit of football as well. My experience playing in a few daily fantasy
-                  contests on Fanduel and DraftKings exposed me to just how competitive and and lucrative this industry
-                  really is. There are a frequent number of contests with thousands upon thousands of participants, with
-                  cash prizes that can exceed hundreds of thousands of dollars - <strong>for a single contest</strong>!
-                  Initially I realized that it was incredibly hard to casually pick a lineup of players purely based
-                  on your "intuition"; very rarely would you be able to win money this way. You need to develop some type
-                  of software framework that can help you collect data on different players, and make predictions about
-                  how they will perform, based on various metrics. This post is part 1 in a series that focuses on creating
-                  such a framework for daily fantasy basketball, but the basic framework and methodology can be modified and
-                  extended for other sports as well.</p>
+                  contests on Fanduel and DraftKings exposed me to just how competitive and lucrative this industry really is.
+                  There are a frequent number of contests with thousands upon thousands of participants, with cash prizes
+                  that can exceed hundreds of thousands of dollars - for a <strong>single</strong> contest! Initially I realized
+                  that it was incredibly hard to casually pick a lineup of players purely based on your "intuition"; very rarely
+                  would you be able to win money this way. You need to develop some type of predictive framework that can help you
+                  collect data on different players, and make predictions about how they will perform, based on various metrics.
+                  This post is part 1 in a series that focuses on creating a software framework for daily fantasy basketball, but
+                  the basic framework and methodology can be modified and extended for other sports as well.</p>
+                <p>In this first post, I will discuss how to scrape ESPN's website for NBA player data, and create an Excel spreadsheet
+                  of all the box score statistics for each game in which that player was active. ESPN has a page for each team in the NBA
+                  which lists all the players on that particular team's roster. The url for the ESPN player page is located at
+                  <a href="http://www.espn.com/nba/players" style="color:teal">http://www.espn.com/nba/players</a>.</p>
 
-                <p>My primary motivation for this tutorial is that the documentation for Selenium and PhantomJS is quite
-                  convoluted, making a seemingly basic javascript scraping task seem complicated and non-intuitive. Once I
-                  was able to figure it out, however, I envisioned creating a sort of step-by-step "cheat sheet" that would
-                  enable others to pick this up relatively quickly, without having to bury themselves in a web of countless
-                  Google and Stack Overflow searches like I did.</p>
-                <p>For this small project, it is advisable to create a virtual environment so that we can keep Selenium and
-                  PhantomJS packaged locally with this project. The steps are shown below:</p>
-                <pre><code class="language-python"></code></pre>
+                <img src="img/espn_nba_players_page.jpg" alt="golden state warriors team roster" style="height: 100%; width: 100%; object-fit: contain"/>
 
-                <p>Now, let's install Selenium and PhantomJS using Brew:</p>
+                <p> Let's go ahead and use my favorite team - the <a href="" style="color:teal">Golden State Warriors</a> - as our example
+                  for this exercise. Below is the code that will enable us to scrape the team roster page and extract the url for whichever
+                  team's roster we want to access.</p>
 
-                <pre><code class="language-python"></code></pre>
+                <pre><code class="language-python">class Team:
+  'Common base class for all NBA teams'
+  team_count = 0
 
-                <p>Awesome. Now that we have our required utilities set up, we need to inspect the HTML source code for the
-                javascript-rendered site that we want to scrape. If you just try to view the source, you will only see the
-                javascript sections added under the <code>script</code> tag. We need to inspect the source in order to see
-                the javascript executed and loaded as HTML. Then we must navigate through the web of nested HTML tags in order
-                to find the content we are looking for. The resulting HTML after javascript content is loaded is usually quite
-                complex and intricate, much more so than a bare-bones HTML webpage (this makes intuitive sense, since javascript
-                handles more complex tasks than those which can be done by HTML alone).</p>
+  def __init__(self, team_name, team_link):
+      self.team_name = team_name
+      self.team_link = team_link
+      self.player_links = []
+      self.player_names = []
+      self.player_positions = []
+      self.game_log_links = []
+      self.team_links = {}
+      self.player_list = []
+      Team.team_count += 1
 
-                <img src="img/yahoo-finance-screenshot-1.jpg" alt="yahoo inspect screenshot 1" style='height: 100%; width: 100%; object-fit: contain'/>
+  def get_players(self):
+      # add wait times in between getting each team's data to prevent overload
+      wait_time = round(max(5, 10 + random.gauss(0,3)), 2)
+      time.sleep(wait_time)
 
-                <p>Running your cursor over different sections of the webpage will highlight the sections of code that correspond
-                  to it. Let's try to navigate our way to where the value for "Beta" is contained. Don't worry too much about the
-                  strange tag id's; we're only concerned with finding the specific tags that we need. For now, we'll focus on just
-                  grabbing this one piece of information - the stock's beta value - to demonstrate the power of Selenium and PhantomJS.
-                  Afterwards, you can extrapolate it to whatever content you want to scrape. In order to obtain the element that we want,
-                  the easiest way is to use the XPath for that element. Right-click the line of code corresponding to your desired element,
-                  select "Copy", and then select "Copy XPath". This will copy the XPath variable to the clipboard, which we can then use
-                  in our Python script. I would suggest pasting the XPath in a safe place, perhaps a simple text file, so that you can
-                  retrieve it later.</p>
+      self.team_page = urlopen(self.team_link)
+      self.soup = BeautifulSoup(self.team_page, 'html.parser')
 
-                <img src="img/yahoo-finance-screenshot-2.jpg" alt="yahoo inspect screenshot 2" style='height: 100%; width: 100%; object-fit: contain'/>
+      for a in self.soup.findAll('a'):
+        if '/player/' in a['href']:
+          self.player_links.append(a['href'])
 
-                <p>Now we can start writing our scraper. Unlike my last post, which contained more complex data structures, here we'll just define
-                  one <code>StockQuote</code> class to illustrate the power of Selenium and PhantomJS.</p>
+      #extract the name of each player
+      for a in self.soup.findAll('td', attrs={'class': 'sortcell'}):
+          for b in a.findAll('a'):
+              self.player_names.append(b.text)
+
+      for i in range(0, len(self.player_links)):
+          game_log_link = str.replace(self.player_links[i], '/_/', '/gamelog/_/')
+          game_log_link = str.replace(game_log_link, self.player_names[i], 'year/' + self.year + '/' + self.player_names[i])
+          self.game_log_links.append(game_log_link)
+
+      #now we have links to all the player URLs for this particular team
+      for i in range(0, len(self.player_links)):
+          new_player = Player(self.team_name, self.player_names[i], self.player_links[i], self.game_log_links[i])
+          new_player.get_season_stats()
+          if new_player.active == False:
+              continue
+          new_player.get_each_game_stats()
+          self.player_list.append(new_player)
+
+      return self.player_list</code></pre>
+
+                <p>There's a good bit of code here, so let's examine it step by step. First, we create a <code>Team</code> class
+                  which will serve as the common base class for each NBA team. We initialize our team with a <code>team_name</code>
+                  and <code>team_link</code>, and initialize a bunch of empty lists to store subsequent data that we need to crawl.</p>
+                <ul>
+                  <li><code>self.player_links</code>: links to each player page url (covered in next section)</li>
+                  <li><code>self.player_names</code>: the name of each player (pretty self explanatory)</li>
+                  <li><code>self.player_positions</code>: the position that each player plays (PG, SG, SF, PF, C)</li>
+                  <li><code>self.game_log_links</code>: the urls for each player's game log</li>
+                  <!--<li><code>self.team_links</code>: a dictionary storing the link to each NBA team's roster page, stored with
+                    the team's 3-letter abbreviation as the key and the url as the value-->
+                  <li><code>self.player_list</code>: a list of all the player objects for this particular team</li>
+                </ul>
+
+                <p>The <code>get_players</code> method starts off with introducing random wait times so as to not overload the
+                  web page, followed by opening the team url using <code>urlopen</code> and creating the <code>BeautifulSoup</code>
+                  object from the resulting <code>self.team_page</code> object. Let's go ahead and use my favorite team - the
+                  Golden State Warriors - as our example for this exercise. Clicking on the link for this team will take us to
+                  the team roster page, as shown below.</p>
+
+                  <img src="img/warriors_roster_espn.jpg" alt="warriors roster espn" style='height: 100%; width: 100%; object-fit: contain'/>
+
+                <p>Then, we use the standard <code>findAll</code> method to loop through the resulting HTML and grab all the player page links,
+                  specified by an <code><a href></code> tag that contains <code>/player/</code> in the url. Once we grab all these, we store them
+                  in <code>self.player_links</code>. The next loop iterates through <code>self.player_links</code>, going to each player's web page
+                  and grabbing the player's game log url. Let's use my favorite player - <a href="http://www.espn.com/nba/player/gamelog/_/id/3975/stephen-curry"style="color:teal">
+                  Stephen Curry</a> - as an example to emulate what this code is doing.</p>
+
+                <img src="img/stephen_curry_espn_game_log_1.jpg" alt="stephen curry espn game log 2017-2018" style='height: 100%; width: 100%; object-fit: contain'/>
+
+                <p>The player page contains multiple tabs, but the tab we are interested in for this exercise is the game log tab. However, since the season
+                  hasn't started yet, there are only a few preseason games listed for this year. Let's go ahead and click on the drop-down menu for the season
+                  and select 2016-2017 instead, so we can see the box score stats for all of last year.</p>
+
+                <img src="img/stephen_curry_espn_game_log_2.jpg" alt="stephen curry espn game log 2016-2017" style='height: 100%; width: 100%; object-fit: contain'/>
+
+                <p>If we take a look at a updated url after selecting the 2016-2017 season, we can see that <code>/2017/</code> is added to the url in between<code>year</code>
+                  and <code>stephen-curry</code>. Therefore, we add this to the url before storing it in <code>self.game_log_links</code>. We'll look at collecting the box score
+                  statistics a little bit later; for now let's jump back to the team roster page. In the next loop, we collect the names of each player, stored in the <code>a href</code>
+                  tags that link to each player page. Then we append these to <code>self.player_names</code>.</p>
+
+                <p>In the final loop of <code>get_players</code>, we cycle through <code>self.player_links</code>, and create a new <code>Player</code>
+                  object for each player on the team. We'll take a look at the details of the <code>Player</code> object definition below. As you can see, we are calling the method
+                  <code>get_season_stats()</code> belonging to the <code>Player</code> object, which extracts the player's average season statistics. Then, we check to see if that
+                  particular player is active or not; if he isn't, then we don't need to collect stats for him. If the player is active, then we continue collecting the individual
+                  game box score statistics for each game played within that season, using <code>get_each_game_stats()</code>. Finally, we append the newly created
+                  <code>Player</code> object to <code>self.player_list</code>. I'll end this post right here, and in my next post we'll take a look at the <code>Player</code> class
+                  definition to see how we actually extract the data.</p>
+
+                  <!--<p>Now let's take a look at the definition of the <code>Player</code> object below to see the details
+                  of how this works.</p>
+
+                <pre><code class="language-python">class Player:
+    'Common base class for all player statistics'
+    player_count = 0
+
+    def __init__(self, team_name, player_name, player_link, game_log_link):
+        self.team_name = team_name
+        self.player_name = player_name
+        self.player_link = player_link
+        self.player_avg_data = []
+        self.game_log_links = []
+        self.game_log_link = game_log_link
+        self.game_log_text = [] #all the text stored in one player's game log
+        self.game_log_element = [] #one row of text from the game log
+        self.game_log = [] #the final, organized list of game log data
+        self.active = True
+        Player.player_count += 1
+
+    def get_season_stats(self):
+        # add wait times in between getting each player's data to prevent overload
+        wait_time = round(max(5, 10 + random.gauss(0,3)), 2)
+        time.sleep(wait_time)
+
+        self.player_page = urlopen(self.player_link)
+        self.soup = BeautifulSoup(self.player_page, 'html.parser')
+
+        #find player position
+        player_position_tag = self.soup.findAll('li', attrs={'class': 'first'})[0]
+        print(player_position_tag)
+        self.player_position = player_position_tag.text.split(' ', 1)[1]
+        print("player position: " + self.player_position)
+
+        #find td elements for stats
+        for a in self.soup.findAll('div', attrs={'style': 'padding-top:5px;'}):
+            for b in a.findAll('tr', attrs={'class': 'oddrow'}):
+                for c in b.findAll('td'):
+                    print(c.text)
+                    self.player_avg_data.append(c.text)
+
+        for j in range(0, len(self.player_avg_data)):
+            if self.player_avg_data[j] == 'Career':
+                self.active = False
+                break
+            elif j == 0:
+                continue
+            elif j == 1:
+                str1 = self.player_avg_data[j]
+                self.games_played = int(str1)
+            elif j == 2:
+                str1 = self.player_avg_data[j]
+                self.minutes = float(str1)
+            elif j == 3:
+                str1 = self.player_avg_data[j].split('-', 1 )[0]
+                str2 = self.player_avg_data[j].split('-', 1 )[1]
+                self.field_goals_made = float(str1)
+                self.field_goals_attempted = float(str2)
+            elif j == 4:
+                str1 = self.player_avg_data[j]
+                self.field_goal_percentage = float(str1)
+            elif j == 5:
+                str1 = self.player_avg_data[j].split('-', 1)[0]
+                str2 = self.player_avg_data[j].split('-', 1)[1]
+                self.three_pointers_made = float(str1)
+                self.three_pointers_attempted = float(str2)
+            elif j == 6:
+                str1 = self.player_avg_data[j]
+                self.three_point_percentage = float(str1)
+            elif j == 7:
+                str1 = self.player_avg_data[j].split('-', 1)[0]
+                str2 = self.player_avg_data[j].split('-', 1)[1]
+                self.free_throws_made = float(str1)
+                self.free_throws_attempted = float(str2)
+            elif j == 8:
+                str1 = self.player_avg_data[j]
+                self.free_throw_percentage = float(str1)
+            elif j == 9:
+                str1 = self.player_avg_data[j]
+                self.rebounds = float(str1)
+            elif j == 10:
+                str1 = self.player_avg_data[j]
+                self.assists = float(str1)
+            elif j == 11:
+                str1 = self.player_avg_data[j]
+                self.blocks = float(str1)
+            elif j == 12:
+                str1 = self.player_avg_data[j]
+                self.steals = float(str1)
+            elif j == 13:
+                str1 = self.player_avg_data[j]
+                self.fouls = float(str1)
+            elif j == 14:
+                str1 = self.player_avg_data[j]
+                self.turnovers = float(str1)
+            elif j == 15:
+                str1 = self.player_avg_data[j]
+                self.points = float(str1)
 
 
-                <pre><code class="language-python">class StockQuote:
-    def __init__(self, symbol, company):
-        self.symbol = symbol
-        self.company = company
+    def get_each_game_stats(self):
+        # add wait times in between getting each player's data to prevent overload
+        wait_time = round(max(5, 10 + random.gauss(0,3)), 2)
+        time.sleep(wait_time)
 
-    def scrape_yahoo(self, div=0):
-        # Start with Yahoo's base URL format and use string replace for our current stock symbol
-        url = 'http://finance.yahoo.com/quote/%s/key-statistics?p=%s/' % (self.symbol, self.symbol)
+        print("gameLogPage: " + self.game_log_link)
+        self.game_log_page = urlopen(self.game_log_link)
+        self.soup = BeautifulSoup(self.game_log_page, 'html.parser')
 
-        # Instantiate the driver
-        driver = webdriver.PhantomJS()
-        driver.get(url)
-        driver.implicitly_wait(20)
+        #find player position
+        for a in self.soup.find('table', attrs={'cellspacing': '1'}):
+            print("NEXT GAME LOG")
+            for b in a.findAll('td'):
+                print("player_game_log_stats: " + str(b))
+                self.game_log_text.append(b.text)
 
-        # Use the XPath to get Beta value
-        elem = driver.find_element_by_xpath("//*[@id='main-0-Quote-Proxy']/section/div[2]/section/div/section/div[2]/div[2]/div/div[1]/table/tbody/tr[1]/td[2]")
+        self.game_log_text = self.game_log_text[18:]
 
-        # Store the value
-        self.beta = elem.text</code></pre>
+        j = 0
+        counter = 0
+        while(j < len(self.game_log_text)):
+            if self.game_log_text[j] == 'November' or self.game_log_text[j] == 'December' \
+                or self.game_log_text[j] == 'January' or self.game_log_text[j] == 'February' or self.game_log_text[j] == 'March':
+                j = j+15
+                counter = counter+15
+                continue
+            elif 'Previously' in self.game_log_text[j]:
+                j = j+1
+                counter = counter+1
+                continue
+            elif 'POSTSEASON' in self.game_log_text[j]:
+                break
+            elif self.game_log_text[j] == 'DATE':
+                j = j+17
+                counter = counter+17
+                continue
+            elif self.game_log_text[j] == 'October' or self.game_log_text[j] == 'REGULAR SEASON STATS':
+                self.fanduel_points = self.points + 1.2*self.rebounds + 1.5*self.assists + 2*self.blocks + 2*self.steals - self.turnovers
+                break
+            else:
+                if j == counter:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(str1)
+                    j = j+1
+                    continue
+                elif j == counter+1:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(str1)
+                    j = j+1
+                    continue
+                elif j == counter+2:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(str1)
+                    j = j+1
+                    continue
+                elif j == counter+3:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+4:
+                    str1 = self.game_log_text[j].split('-', 1 )[0]
+                    str2 = self.game_log_text[j].split('-', 1 )[1]
+                    self.game_log_element.append(float(str1))
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+5:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+6:
+                    str1 = self.game_log_text[j].split('-', 1)[0]
+                    str2 = self.game_log_text[j].split('-', 1)[1]
+                    self.game_log_element.append(float(str1))
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+7:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+8:
+                    str1 = self.game_log_text[j].split('-', 1)[0]
+                    str2 = self.game_log_text[j].split('-', 1)[1]
+                    self.game_log_element.append(float(str1))
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+9:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+10:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+11:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+12:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+13:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+14:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+15:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                elif j == counter+16:
+                    str1 = self.game_log_text[j]
+                    self.game_log_element.append(float(str1))
+                    j = j+1
+                    continue
+                else:
+                    counter = counter+17
+                    new_game = Game(self.game_log_element)
+                    self.game_log.append(new_game)
+                    self.game_log_element[:] = []
+                    continue
 
-                <p>The <code>StockQuote</code> class is relatively simple, with the constructor setting the <code>self.symbol</code>
-                  and <code>self.company</code> variables to the values that are passed in. The interesting part of the code begins
-                  with the <code>scrape_yahoo()</code> function. First, we need to define our <code>url</code> string. The Yahoo URL
-                  that stores key statistics for a particular stock contains the stock symbol twice, which is how each URL differentiates
-                  itself from each other. Therefore, we just use string replace to set the unique <code>url</code> string for each stock.</p>
-                <p>Now for the tricky part. In order to utilize PhantomJS, we need to instantiate a <code>driver</code> by using the base
-                  call to <code>webdriver.PhantomJS()</code>. PhantomJS is essentially a headless WebKit for website testing. This means that
-                  it essentially uses a "virtual" browser rather than actually opening up the browser interface. This enables much faster unit
-                  tests for websites, since the overhead of browser startup and shutdown is avoided. We need to call the <code>get()</code>
-                  member function belonging to <code>driver</code>, passing our <code>url</code> variable in as the main argument. Its
-                  generally a good practice to add a specified wait time, especially if you are scraping many different URLs at once. Let's
-                  take a closer look at the next line of code.</p>
-                  <pre><code class="language-python"># Use the XPath to get Beta value
-elem = driver.find_element_by_xpath("//*[@id='main-0-Quote-Proxy']/section/div[2]/section/div/section/div[2]/div[2]/div/div[1]/table/tbody/tr[1]/td[2]")</code></pre>
-                <p>We use the <code>find_element_by_xpath()</code> method to extract the element corresponding to a particular XPath. Take a
-                  second to notice the way the XPath string is structured - its essentially the HTML directory tree for the element we are
-                  scraping. This is why the last part of the XPath string is <code>/table/tbody/tr[1]/td[2]</code> which corresponds to the HTML source
-                  we inspected when looking at Yahoo's website. The stock's Beta value is stored in the second td element, which is why the XPath
-                  ends in <code>td[2]</code>.</p>
-                <p>Once we instantiate <code>elem</code> to the element we are extracting, we can access its <code>text</code> member variable to
-                  extract the string that is stored under that tag. We can then simply store <code>elem.text</code> within the <code>StockQuote</code>
-                  member variable <code>self.beta</code>. Let's run a simple test case in our <code>main</code> method to see if the program correctly
-                  scrapes the Beta value for Apple stock (ticker symbol: AAPL).</p>
-                <pre><code class="language-python">def main():
-    # Test out one quote to see if correct text is returned
-    my_quote = StockQuote('AAPL', 'Apple')
-    my_quote.scrape_yahoo()
-    print my_quote.beta
+    def total_fantasy_pts(self):
+        return self.points + 1.2*self.rebounds+ \
+                1.5*self.assists + 2*self.blocks + \
+                2*self.steals - self.turnovers
 
-if __name__ == '__main__':
-    sys.exit(main())</code></pre>
-                <p>We create a new <code>StockQuote</code> object and name it <code>my_quote</code>, and call the <code>scrape_yahoo()</code> method.
-                  We can run the program to see the output printed to the console:</p>
-                <img src="img/yahoo-scraper-console-screenshot.jpg" alt="yahoo scraper console screenshot" style='height: 100%; width: 100%; object-fit: contain'/>
-                <p>Sure enough, the beta value printed out matches correctly with the value 1.45 listed on the Yahoo page. Hopefully you can now realize
-                  the power of Python with Selenium and PhantomJS to scrape javascript-embedded content from the web, among its many other uses. You can just
-                  follow the same steps outlined in this post for each piece of data you need to scrape. If you wanted to scrape the beta value for many different
-                  stocks at once, for example, the corresponding XPath should be the same for each stock quote's Yahoo page. Thus, you could just put everything in
-                  a <code>for</code> loop and simply make sure to change the value of <code>url</code> every time. Be sure to check out the
-                  <a href="https://github.com/rakeshbhatia/stock-market-data" style="color:teal">Github</a> repository if you want to download the source code for
-                  yourself. Thanks for reading!</p>
+    def avg_fantasy_pts_per_min(self):
+        return (self.points + 1.2*self.rebounds+ \
+                1.5*self.assists + 2*self.blocks + \
+                2*self.steals - self.turnovers) / self.minutes</code></pre>
+
+                <p>Those are some monster numbers in the playoffs, aren't they? (But I digress). Let's scroll down a little bit past the playoffs section; we're
+                  only interested in collecting stats for the regular season.</p>
+
+                <img src="img/stephen_curry_espn_game_log_3.jpg" alt="stephen curry espn game log 2016-2017 part 2" style='height: 100%; width: 100%; object-fit: contain'/>
+
+                <p>There we go. </p>-->
+
             </div>
         </div>
     </div>
